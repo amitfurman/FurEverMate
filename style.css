@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: 'Nunito', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+/* Style the .cats section */
+/* .cats {
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    gap: 20px;
+}*/
+
+/* Style the header and keep it at the top */
+header {
+    text-align: left; /* Align the header content to the left */
+    margin-bottom: 20px; /* Add some space between the header and .cats section */
+}
+
+#product1 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#product1 .cats-container{
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between;
+    padding-top: 20px;
+    /* Add more styles here if needed */
+
+}
+#product1 .row {
+    width: 23%;
+    min-width: 250px ;
+    padding: 10px 12px;
+    border: 1px solid #cce7d0;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
+    margin: 15px 0;
+    transition: 0.2s ease; 
+}
+
+#product1 .row:hover {
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.06);
+}
+
+.row img {
+    width: 200px;
+    height: 250px;
+    border-radius: 15px;
+}
+
+/* Add this CSS to center the image
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+    /* Add more styles here if needed */
+
+.row .info {
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px; */
+    text-align: center;
+    padding: 10px 0;
+    /* Add more styles here if needed */
+}
+
+#product1 .row .info h5 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #757072;
+    margin-bottom: 5px;
+}
+
+/* .row:hover img{
+    transform: scale(1.1);
+} */
+
+.male-sign, .female-sign {
+    margin-right: 5px;
+}
+
+.male-sign {
+    color: lightblue;
+}
+
+.female-sign {
+    color: lightpink;
+}
+
+.heart-icon:hover {
+    color: red;
+}
