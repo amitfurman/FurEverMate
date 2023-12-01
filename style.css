@@ -105,7 +105,22 @@ header {
 .female-sign {
     color: lightpink;
 }
-
+/* Add this to your style.css file */
+/* .heart-icon{
+    color: black;
+  }
+  
 .heart-icon:hover {
+    color: red;
+}
+ 
+.fas.fa-heart.active{
+    color: red;
+} */
+
+.red-heart {
+    color: red;
+}
+.far:hover {
     color: red;
 }
