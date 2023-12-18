@@ -1,63 +1,103 @@
 
 // Import the Puppeteer library
 const puppeteer = require('puppeteer');
- 
-// Define an asynchronous function to run our code
-(async () => {
-    // Launch a new browser instance using Puppeteer
-    const browser = await puppeteer.launch();
- 
-    // Open a new page in the browser
-    const page = await browser.newPage();
- 
-    // Navigate to the specified URL
-    await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
- 
-    // Extract details from each card on the page
-    const cardDetails = await page.evaluate(() => {
-        // Step 1: Retrieve all card elements
-        const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
- 
-        // Step 2: Process each card to extract details
-        return cards.map(card => {
-            // Find the image element in the card and get its source (src) attribute
-            const imgElement = card.querySelector('img');
-            const imgSrc = imgElement ? imgElement.src : '';
- 
-            // Split the text inside the card into lines and take the first two lines
-            const textLines = card.innerText.split('\n\n').slice(0, 2);
-            const name = textLines[0] || '';
-            const description = textLines[1] || '';
- 
-            // Return an object containing the name, description, and image source for each card
-            return { name, description, imgSrc };
-        });
-    });
- 
-    // Print the details of each card
-    cardDetails.forEach((card, index) => {
-        console.log(`Card ${index + 1} Details:`);
-        console.log('Name:', card.name);
-        console.log('Description:', card.description);
-        console.log('Image Source:', card.imgSrc);
-        console.log('-----------------------------------');
-    });
- 
-    // Close the browser after finishing
-    await browser.close();
-})();
+const express = require('express');
+const app = express();
+const PORT = 3000;
 
-function toggleHeart(catId) {
-  var heartIcon = document.getElementById('heart-' + catId);
-  if (heartIcon.classList.contains('fas')) {
-    heartIcon.classList.replace('fas', 'far');
-    heartIcon.classList.remove('red-heart');
-    favoriteCats.push(catId);
-  } else {
-    heartIcon.classList.replace('far', 'fas');
-    heartIcon.classList.add('red-heart');
-  }
-}
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
+app.get('/', async (req, res) => {
+    try {
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
+  
+      const cardDetails = await page.evaluate(() => {
+        const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
+  
+        return cards.map(card => {
+          const imgElement = card.querySelector('img');
+          const imgSrc = imgElement ? imgElement.src : '';
+  
+          const textLines = card.innerText.split('\n\n').slice(0, 2);
+          const name = textLines[0] || '';
+          const description = textLines[1] || '';
+  
+          const location = 'SOS הרצליה';
+          const isMale = description.includes('בן');
+          return { name, description, imgSrc, location, isMale };
+        });
+      });
+  
+      await browser.close();
+  
+      // Render the index.ejs template with the cardDetails
+      res.render('index', { cardDetails });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+ 
+// // Define an asynchronous function to run our code
+// (async () => {
+//     // Launch a new browser instance using Puppeteer
+//     const browser = await puppeteer.launch();
+ 
+//     // Open a new page in the browser
+//     const page = await browser.newPage();
+ 
+//     // Navigate to the specified URL
+//     await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
+ 
+//     // Extract details from each card on the page
+//     const cardDetails = await page.evaluate(() => {
+//         // Step 1: Retrieve all card elements
+//         const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
+ 
+//          // Step 2: Dynamically create cards based on the data
+//         const catContainer = document.querySelector('.cats-container');
+//         const cardTemplate = document.getElementById('catCardTemplate'); 
+
+
+//         // Step 3: Process each card to extract details
+//         return cards.map(card => {
+//             // Find the image element in the card and get its source (src) attribute
+//             const imgElement = card.querySelector('img');
+//             const imgSrc = imgElement ? imgElement.src : '';
+ 
+//             // Split the text inside the card into lines and take the first two lines
+//             const textLines = card.innerText.split('\n\n').slice(0, 2);
+//             const name = textLines[0] || '';
+//             const description = textLines[1] || '';
+
+//                     // Clone the template
+//             const cardClone = cardTemplate ? document.importNode(cardTemplate.content, true) : null;
+
+//             // Update the content of the cloned template with data
+//             cardClone.querySelector('img').src = card.imgSrc;
+//             cardClone.querySelector('h5').textContent = card.name;
+//             cardClone.querySelector('.description h3 p').textContent = card.description;
+
+//             // Append the cloned template to the cat container
+//             catContainer.appendChild(cardClone);
+ 
+//             // Return an object containing the name, description, and image source for each card
+//             return { name, description, imgSrc };
+//         });
+//     });
+ 
+//     // Close the browser after finishing
+//     await browser.close();
+// })();
+
+
 
 
 
@@ -111,19 +151,6 @@ function toggleHeart(catId) {
 
 //     await browser.close()
 // }
-
-// // function toggleHeart(catId) {
-// //   var heartIcon = document.getElementById('heart-' + catId);
-// //   if (heartIcon.classList.contains('fas')) {
-// //     heartIcon.classList.replace('fas', 'far');
-// //     heartIcon.classList.remove('red-heart');
-// //     favoriteCats.push(catId);
-// //   } else {
-// //     heartIcon.classList.replace('far', 'fas');
-// //     heartIcon.classList.add('red-heart');
-// //   }
-// // }
-
 
 // main().catch(error => console.error(error));
 
