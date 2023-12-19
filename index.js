@@ -43,7 +43,11 @@ async function fetchDataFromSospets() {
 
             const location = 'SOS הרצליה';
             const isMale = description.includes('בן');
-            return { name, description, imgSrc, location, isMale };
+
+            const anchorTag = card.querySelector('a');
+            const href = anchorTag ? anchorTag.getAttribute('href') : '';
+
+            return { name, description, imgSrc, location, isMale, href };
         });
     });
 
@@ -64,6 +68,8 @@ async function fetchDataFromLetLive() {
             const imgSrc = imgElement ? imgElement.src : '';
           
             const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
+            const anchorTag = card.querySelector('a');
+            const href = anchorTag ? anchorTag.getAttribute('href') : '';
           
             const { name, location, isMale } = (() => {
               const petDetailsGenderElements = card.querySelectorAll('.pet-details-gendar');
@@ -102,7 +108,7 @@ async function fetchDataFromLetLive() {
               };
             })();
           
-            return { name, description: textLines[1] || '', imgSrc, location, isMale };
+            return { name, description: textLines[1] || '', imgSrc, location, isMale, href };
           });
           
 

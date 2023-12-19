@@ -25,6 +25,13 @@ header {
     background-color: #ffeae2;
 }
 
+a {
+    color: inherit; /* Use the text color of the parent */
+    text-decoration: none; /* Remove underline */
+    /* cursor: pointer; Show pointer cursor on hover */
+  }
+  
+
 #product1 {
     text-align: center;
     margin-bottom: 20px;
@@ -44,7 +51,7 @@ header {
     padding: 10px 12px;
     border: 1px solid #cce7d0;
     border-radius: 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
     margin: 15px 0;
     transition: 0.2s ease; 
