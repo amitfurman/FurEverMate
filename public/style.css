@@ -56,11 +56,15 @@ a {
     margin: 15px 0;
     transition: 0.2s ease; 
     background-color: white; /* White background for the card container */
-    border-color: #ff8d78;
+    border-color: #efefef;
 }
 
 #product1 .row:hover {
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.06);
+    border-color: #ff8d78;
+    border-width: 2px;
+
+
 }
 
 .row img {
