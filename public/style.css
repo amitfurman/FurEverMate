@@ -8,19 +8,18 @@
     text-decoration: none;
 }
 
+body {
+    /* background-color: #FCF6F5;  */
+    background-color: #f5f5f5;
+}
+
+
 .logo img {
     width: 80px;
     height: 80px;
     margin-left: 20px;
     margin-top: 20px;
 }
-
-/* Style the .cats section */
-/* .cats {
-    display: grid;
-    grid-template-columns: repeat(4, 300px);
-    gap: 20px;
-}*/
 
 /* Style the header and keep it at the top */
 header {
@@ -40,8 +39,6 @@ header {
     flex-wrap: wrap; /* Allow items to wrap to the next line */
     justify-content: space-between;
     padding-top: 20px;
-    /* Add more styles here if needed */
-
 }
 #product1 .row {
     width: 23%;
@@ -53,6 +50,7 @@ header {
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
     margin: 15px 0;
     transition: 0.2s ease; 
+    background-color: white; /* White background for the card container */
 }
 
 #product1 .row:hover {
@@ -86,13 +84,9 @@ header {
 #product1 .row .info h5 {
     font-size: 15px;
     font-weight: 600;
-    color: #757072;
+    color: #ff4a92;
     margin-bottom: 5px;
 }
-
-/* .row:hover img{
-    transform: scale(1.1);
-} */
 
 .male-sign, .female-sign {
     margin-right: 5px;
@@ -105,18 +99,6 @@ header {
 .female-sign {
     color: lightpink;
 }
-/* Add this to your style.css file */
-/* .heart-icon{
-    color: black;
-  }
-  
-.heart-icon:hover {
-    color: red;
-}
- 
-.fas.fa-heart.active{
-    color: red;
-} */
 
 .red-heart {
     color: red;

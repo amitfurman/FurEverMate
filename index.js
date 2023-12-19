@@ -1,5 +1,3 @@
-
-// Import the Puppeteer library
 const puppeteer = require('puppeteer');
 const express = require('express');
 const app = express();
@@ -10,40 +8,196 @@ app.use(express.static('public'));
 
 app.get('/', async (req, res) => {
     try {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
-  
-      const cardDetails = await page.evaluate(() => {
-        const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
-  
-        return cards.map(card => {
-          const imgElement = card.querySelector('img');
-          const imgSrc = imgElement ? imgElement.src : '';
-  
-          const textLines = card.innerText.split('\n\n').slice(0, 2);
-          const name = textLines[0] || '';
-          const description = textLines[1] || '';
-  
-          const location = 'SOS הרצליה';
-          const isMale = description.includes('בן');
-          return { name, description, imgSrc, location, isMale };
-        });
-      });
-  
-      await browser.close();
-  
-      // Render the index.ejs template with the cardDetails
-      res.render('index', { cardDetails });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-    }
-  });
+        // Fetch data from https://www.sospets.co.il/cats-adoption
+        const sospetsData = await fetchDataFromSospets();
 
-  app.listen(PORT, () => {
+        // Fetch data from https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat
+        const letliveData = await fetchDataFromLetLive();
+
+        // Combine the data from both sources
+        const combinedData = sospetsData.concat(letliveData);
+
+        // Render the index.ejs template with the combined data
+        res.render('index', { cardDetails: combinedData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+async function fetchDataFromSospets() {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
+
+    const cardDetails = await page.evaluate(() => {
+        const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
+
+        return cards.map(card => {
+            const imgElement = card.querySelector('img');
+            const imgSrc = imgElement ? imgElement.src : '';
+
+            const textLines = card.innerText.split('\n\n').slice(0, 2);
+            const name = textLines[0] || '';
+            const description = textLines[1] || '';
+
+            const location = 'SOS הרצליה';
+            const isMale = description.includes('בן');
+            return { name, description, imgSrc, location, isMale };
+        });
+    });
+
+    await browser.close();
+    return cardDetails;
+}
+
+async function fetchDataFromLetLive() {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto('https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat', { timeout: 20000 });
+
+    const cardDetails = await page.evaluate(() => {
+        const cards = Array.from(document.querySelectorAll('.pet-details'));
+
+        return cards.map(card => {
+            const imgElement = card.querySelector('img');
+            const imgSrc = imgElement ? imgElement.src : '';
+          
+            const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
+          
+            const { name, location, isMale } = (() => {
+              const petDetailsGenderElements = card.querySelectorAll('.pet-details-gendar');
+              let isMale = false;
+              let location = '';
+          
+              // Iterate through the elements and check their content
+              petDetailsGenderElements.forEach(element => {
+                const textContent = element.innerText;
+          
+                // Check if the element contains the word "זכר"
+                if (textContent.includes('זכר')) {
+                  isMale = true;
+                }
+          
+                // Check if the element contains specific location text
+                if (!textContent.includes('זכר') && !textContent.includes('נקבה')) {
+                  location = textContent;
+                }
+              });
+          
+              return { 
+                name: (() => {
+                    const h3Element = card.querySelector('h3 a');
+                    if (h3Element) {
+                      const href = h3Element.getAttribute('href');
+                      const petParam = new URL(href).searchParams.get('pet');
+                  
+                      // Extract only the part before the hyphen
+                      return petParam.split('-')[0] || '';
+                    }
+                    return '';
+                  })(),
+                location,
+                isMale
+              };
+            })();
+          
+            return { name, description: textLines[1] || '', imgSrc, location, isMale };
+          });
+          
+
+        // return cards.map(card => {
+        //     const imgElement = card.querySelector('img');
+        //     const imgSrc = imgElement ? imgElement.src : '';
+
+        //     const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
+
+        //     let name = '';
+        //     const h3Element = document.querySelector('h3 a');
+        //     if (h3Element) {
+        //         const href = h3Element.getAttribute('href');
+        //         name = decodeURIComponent(new URL(href).searchParams.get('pet'));
+        //     }
+
+        //     const description = textLines[1] || '';
+
+        //     const petDetailsGenderElements = document.querySelectorAll('.pet-details-gendar');
+        //     let isMale = false;
+        //     let location = '';
+
+        //     // Iterate through the elements and check their content
+        //     petDetailsGenderElements.forEach(element => {
+        //     const textContent = element.innerText;
+
+        //     // Check if the element contains the word "זכר"
+        //     if (textContent.includes('זכר')) {
+        //         isMale = true;
+        //     }
+
+        //     // Check if the element contains specific location text
+        //     if (!textContent.includes('זכר') && !textContent.includes('נקבה')) {
+        //         location = textContent;
+        //     }
+        //     });
+
+        //     return { name, description, imgSrc, location, isMale };
+        // });
+    });
+
+    await browser.close();
+
+    return cardDetails;
+}
+
+app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
-  });
+});
+
+// // Import the Puppeteer library
+// const puppeteer = require('puppeteer');
+// const express = require('express');
+// const app = express();
+// const PORT = 3000;
+
+// app.set('view engine', 'ejs');
+// app.use(express.static('public'));
+
+// app.get('/', async (req, res) => {
+//     try {
+//       const browser = await puppeteer.launch();
+//       const page = await browser.newPage();
+//       await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
+  
+//       const cardDetails = await page.evaluate(() => {
+//         const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
+  
+//         return cards.map(card => {
+//           const imgElement = card.querySelector('img');
+//           const imgSrc = imgElement ? imgElement.src : '';
+  
+//           const textLines = card.innerText.split('\n\n').slice(0, 2);
+//           const name = textLines[0] || '';
+//           const description = textLines[1] || '';
+  
+//           const location = 'SOS הרצליה';
+//           const isMale = description.includes('בן');
+//           return { name, description, imgSrc, location, isMale };
+//         });
+//       });
+  
+//       await browser.close();
+  
+//       // Render the index.ejs template with the cardDetails
+//       res.render('index', { cardDetails });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send('Internal Server Error');
+//     }
+//   });
+
+//   app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+//   });
  
 // // Define an asynchronous function to run our code
 // (async () => {
