@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, inital-scale=1.0" />
     <title>FurEver Mate</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="image_src" href="/onlyCatLogo.png" />
+
     <link rel="stylesheet" href="/style.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,7 +34,7 @@
   </head>
   <body>
     <header>
-      <a href="#" class="logo"><img src="/resources/paw.png" alt="" /></a>
+      <a href="#" class="logo"><img src="/logo.png" alt="" /></a>
     </header>
 
     <section id="product1" class="cats">
@@ -50,11 +53,10 @@
             </div>
             <div class="description">
               <h3>
-                <%= card.name %>
-                <% if (card.isMale) { %>
-                    <span class="male-sign"><i class="fas fa-mars"></i></span>
+                <%= card.name %> <% if (card.isMale) { %>
+                <span class="male-sign"><i class="fas fa-mars"></i></span>
                 <% } else { %>
-                    <span class="female-sign"><i class="fas fa-venus"></i></span>
+                <span class="female-sign"><i class="fas fa-venus"></i></span>
                 <% } %>
               </h3>
               <p><%= card.description %></p>

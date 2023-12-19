@@ -15,16 +15,14 @@ body {
 
 
 .logo img {
-    width: 80px;
-    height: 80px;
-    margin-left: 20px;
-    margin-top: 20px;
+    width: 130px;
 }
 
 /* Style the header and keep it at the top */
 header {
     text-align: left; /* Align the header content to the left */
     margin-bottom: 20px; /* Add some space between the header and .cats section */
+    background-color: #ffeae2;
 }
 
 #product1 {
@@ -51,6 +49,7 @@ header {
     margin: 15px 0;
     transition: 0.2s ease; 
     background-color: white; /* White background for the card container */
+    border-color: #ff8d78;
 }
 
 #product1 .row:hover {
@@ -84,7 +83,7 @@ header {
 #product1 .row .info h5 {
     font-size: 15px;
     font-weight: 600;
-    color: #ff4a92;
+    color: #abd9d9;
     margin-bottom: 5px;
 }
 
