@@ -32,6 +32,38 @@ a {
   }
   
 
+/* Add this CSS to your existing styles or create a new style file */
+.sort-options-container {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    padding: 10px;
+    background-color: #fff; /* Adjust the background color as needed */
+    border: 1px solid #ddd; /* Add a border for better visibility */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a box shadow for a subtle effect */
+  }
+  .filter-options {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .filter-checkbox-label {
+    display: inline-block;
+    margin-right: 10px; /* Adjust the margin as needed */
+  }
+
+  .sidebar {
+    width: 250px;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+  }
+  
+  
+
 #product1 {
     text-align: center;
     margin-bottom: 20px;

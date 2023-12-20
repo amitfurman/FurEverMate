@@ -37,6 +37,112 @@
       <a href="#" class="logo"><img src="/logo.png" alt="" /></a>
     </header>
 
+    <!-- Add this HTML snippet where you want the sorting and filtering options to appear -->
+    <!-- <label for="sort-select">סינון לפי:</label>
+      <select id="sort-select" onchange="sortAndFilterCards()">
+        <option value="location">אזור</option>
+        Add more options if needed -->
+    <!-- </select> -->
+
+    <!-- <aside class="filter-section">
+      <div class="filter-options">
+        <label for="filter-north" class="filter-checkbox-label">
+          <input
+            type="checkbox"
+            id="filter-north"
+            value="north"
+            class="filter-checkbox"
+            onclick="fetchAndFilterCards()"
+          />
+          צפון
+        </label>
+
+        <label for="filter-center" class="filter-checkbox-label">
+          <input
+            type="checkbox"
+            id="filter-center"
+            value="center"
+            class="filter-checkbox"
+            onclick="fetchAndFilterCards()"
+          />
+          מרכז
+        </label>
+
+        <label for="filter-south" class="filter-checkbox-label">
+          <input
+            type="checkbox"
+            id="filter-south"
+            value="south"
+            class="filter-checkbox"
+            onclick="fetchAndFilterCards()"
+          />
+          דרום
+        </label>
+      </div>
+    </aside> -->
+    <aside class="sidebar">
+      <div class="filter-section">
+        <div class="filter-options">
+          <label for="filter-north">צפון</label>
+          <input
+            type="checkbox"
+            id="filter-north"
+            value="north"
+            class="filter-checkbox"
+            onclick="fetchAndFilterCards()"
+          />
+          <label for="filter-center">מרכז</label>
+          <input
+            type="checkbox"
+            id="filter-center"
+            value="center"
+            class="filter-checkbox"
+            onclick="fetchAndFilterCards()"
+          />
+          <label for="filter-south">דרום</label>
+          <input
+            type="checkbox"
+            id="filter-south"
+            value="south"
+            class="filter-checkbox"
+            onclick="fetchAndFilterCards()"
+          />
+        </div>
+        <!-- Add more filter options as needed -->
+      </div>
+    </aside>
+
+    <!-- <div class="filter-options">
+      <input
+        type="checkbox"
+        id="filter-north"
+        value="north"
+        class="filter-checkbox"
+        onclick="fetchAndFilterCards()"
+      />
+      <label for="filter-north" class="filter-checkbox-label">צפון</label>
+
+      <input
+        type="checkbox"
+        id="filter-center"
+        value="center"
+        class="filter-checkbox"
+        onclick="fetchAndFilterCards()"
+      />
+      <label for="filter-center" class="filter-checkbox-label">מרכז</label>
+
+      <input
+        type="checkbox"
+        id="filter-south"
+        value="south"
+        class="filter-checkbox"
+        onclick="fetchAndFilterCards()"
+      />
+      <label for="filter-south" class="filter-checkbox-label">דרום</label>
+    </div> -->
+
+    <!-- <label for="filter-select">:סינון לפי אזור</label> -->
+
     <section id="product1" class="cats">
       <div class="cats-container">
         <% cardDetails.forEach((card, index) => { %>
@@ -68,7 +174,6 @@
         <% }); %>
       </div>
     </section>
-
     <script src="/utils.js"></script>
   </body>
 </html>
