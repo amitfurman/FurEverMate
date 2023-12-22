@@ -7,20 +7,32 @@ const PORT = 3000;
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
+let combinedData = []; // Declare combinedData globally
+
+
+// Define an async function to fetch and cache the data
+async function fetchDataAndCache() {
+  // Fetch data from https://www.sospets.co.il/cats-adoption
+  const sospetsData = await fetchDataFromSospets();
+  // Fetch data from https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat
+  const letliveData = await fetchDataFromLetLive();
+
+  combinedData = sospetsData.concat(letliveData); // Update combinedData
+
+  fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
+}
+
+// Call the fetchDataAndCache function right after setting up the server
+app.listen(PORT, async () => {
+  console.log(`Server is running on port ${PORT}`);
+  await fetchDataAndCache();
+});
+
 app.get('/', async (req, res) => {
     try {
-        // Fetch data from https://www.sospets.co.il/cats-adoption
-        const sospetsData = await fetchDataFromSospets();
-
-        // Fetch data from https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat
-        const letliveData = await fetchDataFromLetLive();
-
-        // Combine the data from both sources
-        const combinedData = sospetsData.concat(letliveData);
-
-        fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
+        
         // Render the index.ejs template with the combined data
-        res.render('index', { cardDetails: combinedData });
+        res.render('index.ejs', { cardDetails: combinedData });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -131,8 +143,4 @@ async function fetchDataFromLetLive() {
 
     return cardDetails;
 }
-
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
 
