@@ -12,9 +12,7 @@ let combinedData = []; // Declare combinedData globally
 
 // Define an async function to fetch and cache the data
 async function fetchDataAndCache() {
-  // Fetch data from https://www.sospets.co.il/cats-adoption
   const sospetsData = await fetchDataFromSospets();
-  // Fetch data from https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat
   const letliveData = await fetchDataFromLetLive();
 
   combinedData = sospetsData.concat(letliveData); // Update combinedData
