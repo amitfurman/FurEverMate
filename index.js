@@ -30,7 +30,6 @@ app.listen(PORT, async () => {
 
 app.get('/', async (req, res) => {
     try {
-        
         // Render the index.ejs template with the combined data
         res.render('index.ejs', { cardDetails: combinedData });
     } catch (error) {
@@ -55,6 +54,15 @@ async function fetchDataFromSospets() {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
+
+    let isDisabled = await page.evaluate(() => document.querySelector('.kuTaGy').disabled);
+
+    while (await page.$('.kuTaGy') && !isDisabled) {
+      await page.click('.kuTaGy');
+      await page.waitForTimeout(500);
+      
+      isDisabled = await page.evaluate(() => document.querySelector('.kuTaGy').disabled);
+    }
 
     const cardDetails = await page.evaluate(() => {
         const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
