@@ -33,16 +33,16 @@ a {
   
 
 /* Add this CSS to your existing styles or create a new style file */
-.sort-options-container {
+/* .sort-options-container {
     position: fixed;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
     padding: 10px;
-    background-color: #fff; /* Adjust the background color as needed */
-    border: 1px solid #ddd; /* Add a border for better visibility */
+    background-color: #fff;
+    border: 1px solid #ddd; 
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a box shadow for a subtle effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
   }
   .filter-options {
     text-align: right;
@@ -52,7 +52,7 @@ a {
 
   .filter-checkbox-label {
     display: inline-block;
-    margin-right: 10px; /* Adjust the margin as needed */
+    margin-right: 10px;
   }
 
   .sidebar {
@@ -60,7 +60,7 @@ a {
     background-color: #f8f8f8;
     padding: 20px;
     border-right: 1px solid #e0e0e0;
-  }
+  } */
   
   
 
@@ -74,18 +74,18 @@ a {
 #product1 .cats-container{
     display: flex;
     flex-wrap: wrap; /* Allow items to wrap to the next line */
-    /* justify-content: space-between; */
+    justify-content: space-between;
     padding-top: 20px;
 }
 #product1 .row {
-    width: 23%;
-    min-width: 250px ;
-    padding: 10px 12px;
+    width: 20%;
+    min-width: 240px ;
+    padding: 20px 12px 16px 10px;
     border: 1px solid #cce7d0;
     border-radius: 20px;
     /* cursor: pointer; */
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
-    margin: 15px 10px;
+    margin: 0px 0px 20px 0;
     transition: 0.2s ease; 
     background-color: white; /* White background for the card container */
     border-color: #efefef;
@@ -147,4 +147,79 @@ a {
 }
 .far:hover {
     color: red;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: row-reverse; /* This will put the sidebar on the right */
+    /* flex-wrap: wrap;*/
+    justify-content: space-between; 
+  }
+  
+  .main-content {
+    flex-grow: 1; /* This will make the content take the remaining space */
+    width: calc(100% - 320px); /* Subtract the width of the sidebar plus some extra for margin/padding */
+  }
+
+.filter-section {
+    position: sticky;
+    top: 0;
+    background-color: #f8f8f8; 
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+  }
+
+.sidebar {
+    background-color: #f8f8f8; /* or any color you want */
+    width: 190px; /* Adjust the width as needed */
+    margin-top: 20px;
+    padding: 0;
+    box-sizing: border-box;
+    height: auto; /* This will make it take full height of the viewport */
+    border-right: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+}
+
+.filter-options div{
+    display: flex;
+    flex-direction: row-reverse; /* Aligns checkbox and label on the same line */
+    align-items: center; /* Centers them vertically */
+    justify-content: flex-end; 
+}
+  
+.filter-category {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    direction: rtl; /* Right-to-left direction for Hebrew text */
+
+}
+.filter-checkbox {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+  
+
+.filter-checkbox-label, .checkbox-container {
+    display: block;
+    align-items: center; 
+    cursor: pointer;
+    direction: rtl; 
+  }
+  
+.checkbox-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start; /* Aligns checkbox to the right */
+    margin-bottom: 12px; /* Spacing between checkbox items */
+    align-items: center; /* vertically center align checkbox and label */
+}
+
+/* Add styles for checked checkboxes to mimic the image */
+.filter-checkbox:checked + label {
+    background-image: url('checked-icon-path'); /* Path to the checked icon */
+    padding-left: 25px; /* Adjust based on the size of the icon */
+    background-repeat: no-repeat;
+    background-position: left center;
 }

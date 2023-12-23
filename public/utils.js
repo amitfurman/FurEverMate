@@ -117,14 +117,17 @@ function createCardElement(card, index) {
 
     const nameHeading = document.createElement('h3');
     nameHeading.textContent = card.name;
-
+    
+    const spaceTextNode = document.createTextNode(' ');
+    nameHeading.appendChild(spaceTextNode);
+    
     const genderIcon = document.createElement('span');
     genderIcon.classList.add(card.isMale ? 'male-sign' : 'female-sign');
     const genderIconClass = card.isMale ? 'fas fa-mars' : 'fas fa-venus';
     genderIcon.innerHTML = `<i class="${genderIconClass}"></i>`;
-
+    
     nameHeading.appendChild(genderIcon);
-
+    
     const descriptionParagraph = document.createElement('p');
     descriptionParagraph.textContent = card.description;
 

@@ -34,146 +34,104 @@
   </head>
   <body>
     <header>
-      <a href="#" class="logo"><img src="/logo.png" alt="" /></a>
+      <a href="/" class="logo"><img src="/logo.png" alt="" /></a>
     </header>
-
-    <!-- Add this HTML snippet where you want the sorting and filtering options to appear -->
-    <!-- <label for="sort-select">סינון לפי:</label>
-      <select id="sort-select" onchange="sortAndFilterCards()">
-        <option value="location">אזור</option>
-        Add more options if needed -->
-    <!-- </select> -->
-
-    <!-- <aside class="filter-section">
-      <div class="filter-options">
-        <label for="filter-north" class="filter-checkbox-label">
-          <input
-            type="checkbox"
-            id="filter-north"
-            value="north"
-            class="filter-checkbox"
-            onclick="fetchAndFilterCards()"
-          />
-          צפון
-        </label>
-
-        <label for="filter-center" class="filter-checkbox-label">
-          <input
-            type="checkbox"
-            id="filter-center"
-            value="center"
-            class="filter-checkbox"
-            onclick="fetchAndFilterCards()"
-          />
-          מרכז
-        </label>
-
-        <label for="filter-south" class="filter-checkbox-label">
-          <input
-            type="checkbox"
-            id="filter-south"
-            value="south"
-            class="filter-checkbox"
-            onclick="fetchAndFilterCards()"
-          />
-          דרום
-        </label>
-      </div>
-    </aside> -->
-    <aside class="sidebar">
-      <div class="filter-section">
-        <div class="filter-options">
-          <label for="filter-north">צפון</label>
-          <input
-            type="checkbox"
-            id="filter-north"
-            value="north"
-            class="filter-checkbox"
-            onclick="fetchAndFilterCards()"
-          />
-          <label for="filter-center">מרכז</label>
-          <input
-            type="checkbox"
-            id="filter-center"
-            value="center"
-            class="filter-checkbox"
-            onclick="fetchAndFilterCards()"
-          />
-          <label for="filter-south">דרום</label>
-          <input
-            type="checkbox"
-            id="filter-south"
-            value="south"
-            class="filter-checkbox"
-            onclick="fetchAndFilterCards()"
-          />
-        </div>
-        <!-- Add more filter options as needed -->
-      </div>
-    </aside>
-
-    <!-- <div class="filter-options">
-      <input
-        type="checkbox"
-        id="filter-north"
-        value="north"
-        class="filter-checkbox"
-        onclick="fetchAndFilterCards()"
-      />
-      <label for="filter-north" class="filter-checkbox-label">צפון</label>
-
-      <input
-        type="checkbox"
-        id="filter-center"
-        value="center"
-        class="filter-checkbox"
-        onclick="fetchAndFilterCards()"
-      />
-      <label for="filter-center" class="filter-checkbox-label">מרכז</label>
-
-      <input
-        type="checkbox"
-        id="filter-south"
-        value="south"
-        class="filter-checkbox"
-        onclick="fetchAndFilterCards()"
-      />
-      <label for="filter-south" class="filter-checkbox-label">דרום</label>
-    </div> -->
-
-    <!-- <label for="filter-select">:סינון לפי אזור</label> -->
-
-    <section id="product1" class="cats">
-      <div class="cats-container">
-        <% cardDetails.forEach((card, index) => { %>
-        <div class="row">
-          <a href="<%= card.href %>" target="_blank" class="card-link">
-            <img src="<%= card.imgSrc %>" alt="" />
-          </a>
-          <div class="info">
-            <h5><%= card.location %></h5>
-            <div>
-              <i
-                id="heart-cat<%= index + 1 %>"
-                class="far fa-heart"
-                onclick="toggleHeart('cat<%= index + 1 %>')"
-              ></i>
+    <div class="content-container">
+      <aside class="sidebar">
+        <div class="filter-section">
+          <h3 class="filter-category">אזור</h3>
+          <div class="filter-options">
+            <div class="checkbox-container">
+              <label for="filter-north">צפון</label>
+              <input
+                type="checkbox"
+                id="filter-north"
+                value="north"
+                class="filter-checkbox"
+                onclick="fetchAndFilterCards()"
+              />
             </div>
-            <div class="description">
-              <h3>
-                <%= card.name %> <% if (card.isMale) { %>
-                <span class="male-sign"><i class="fas fa-mars"></i></span>
-                <% } else { %>
-                <span class="female-sign"><i class="fas fa-venus"></i></span>
-                <% } %>
-              </h3>
-              <p><%= card.description %></p>
+            <div class="checkbox-container">
+              <label for="filter-center">מרכז</label>
+              <input
+                type="checkbox"
+                id="filter-center"
+                value="center"
+                class="filter-checkbox"
+                onclick="fetchAndFilterCards()"
+              />
+            </div>
+            <div class="checkbox-container">
+              <label for="filter-south">דרום</label>
+              <input
+                type="checkbox"
+                id="filter-south"
+                value="south"
+                class="filter-checkbox"
+                onclick="fetchAndFilterCards()"
+              />
+            </div>
+          </div>
+
+          <h3 class="filter-category">מין</h3>
+          <div class="filter-options">
+            <div class="checkbox-container">
+              <label for="filter-female">נקבה</label>
+              <input
+                type="checkbox"
+                id="filter-female"
+                value="female"
+                class="filter-checkbox"
+              />
+            </div>
+            <div class="checkbox-container">
+              <label for="filter-male">זכר</label>
+              <input
+                type="checkbox"
+                id="filter-male"
+                value="male"
+                class="filter-checkbox"
+              />
             </div>
           </div>
         </div>
-        <% }); %>
+      </aside>
+      <div class="main-content">
+        <section id="product1" class="cats">
+          <div class="cats-container">
+            <% cardDetails.forEach((card, index) => { %>
+            <div class="row">
+              <a href="<%= card.href %>" target="_blank" class="card-link">
+                <img src="<%= card.imgSrc %>" alt="" />
+              </a>
+              <div class="info">
+                <h5><%= card.location %></h5>
+                <div>
+                  <i
+                    id="heart-cat<%= index + 1 %>"
+                    class="far fa-heart"
+                    onclick="toggleHeart('cat<%= index + 1 %>')"
+                  ></i>
+                </div>
+                <div class="description">
+                  <h3>
+                    <%= card.name %> <% if (card.isMale) { %>
+                    <span class="male-sign"><i class="fas fa-mars"></i></span>
+                    <% } else { %>
+                    <span class="female-sign"
+                      ><i class="fas fa-venus"></i
+                    ></span>
+                    <% } %>
+                  </h3>
+                  <p><%= card.description %></p>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
     <script src="/utils.js"></script>
   </body>
 </html>
