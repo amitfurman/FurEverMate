@@ -101,7 +101,12 @@
           <div class="cats-container">
             <% cardDetails.forEach((card, index) => { %>
             <div class="row">
-              <a href="<%= card.href %>" target="_blank" class="card-link">
+              <a
+                href="<%= card.href %>"
+                target="_blank"
+                class="card-link"
+                title="לחצו לפרטים נוספים"
+              >
                 <img src="<%= card.imgSrc %>" alt="" />
               </a>
               <div class="info">
