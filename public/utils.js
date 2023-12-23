@@ -27,9 +27,8 @@ function toggleHeart(catId) {
   
   const locationMapping = {
     'north': 'תנו לחיות לחיות צפון',
-    'center': ['SOS הרצליה', 'תנו לחיות לחיות מרכז'],
+    'center': ['SOS הרצליה', 'תנו לחיות לחיות מרכז','כלביית כפר רות'],
     'south': 'תנו לחיות לחיות דרום',
-    // Add more locations if needed
 };
 
 function sortAndFilterCards(cardDetails) {

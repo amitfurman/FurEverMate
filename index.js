@@ -88,65 +88,150 @@ async function fetchDataFromSospets() {
 }
 
 async function fetchDataFromLetLive() {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto('https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat', { timeout: 20000 });
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  const baseUrl = 'https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat';
+  let currentPage = 1;
 
-    const cardDetails = await page.evaluate(() => {
-        const cards = Array.from(document.querySelectorAll('.pet-details'));
+  const cardDetails = [];
 
-        return cards.map(card => {
-            const imgElement = card.querySelector('img');
-            const imgSrc = imgElement ? imgElement.src : '';
-          
-            const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
-            const anchorTag = card.querySelector('a');
-            const href = anchorTag ? anchorTag.getAttribute('href') : '';
-          
-            const { name, location, isMale } = (() => {
-              const petDetailsGenderElements = card.querySelectorAll('.pet-details-gendar');
-              let isMale = false;
-              let location = '';
-          
-              // Iterate through the elements and check their content
-              petDetailsGenderElements.forEach(element => {
-                const textContent = element.innerText;
-          
-                // Check if the element contains the word "זכר"
-                if (textContent.includes('זכר')) {
-                  isMale = true;
-                }
-          
-                // Check if the element contains specific location text
-                if (!textContent.includes('זכר') && !textContent.includes('נקבה')) {
-                  location = textContent;
-                }
-              });
-          
-              return { 
-                name: (() => {
-                    const h3Element = card.querySelector('h3 a');
-                    if (h3Element) {
-                      const href = h3Element.getAttribute('href');
-                      const petParam = new URL(href).searchParams.get('pet');
-                  
-                      // Extract only the part before the hyphen
-                      return petParam.split('-')[0] || '';
-                    }
-                    return '';
-                  })(),
-                location,
-                isMale
-              };
-            })();
-          
-            return { name, description: textLines[1] || '', imgSrc, location, isMale, href };
+  do {
+    await page.goto(`${baseUrl}&paged=${currentPage}`, { timeout: 20000 });
+
+    const pageCardDetails = await page.evaluate(() => {
+      const cards = Array.from(document.querySelectorAll('.pet-details'));
+
+      return cards.map(card => {
+        const imgElement = card.querySelector('img');
+        const imgSrc = imgElement ? imgElement.src : '';
+      
+        const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
+        const anchorTag = card.querySelector('a');
+        const href = anchorTag ? anchorTag.getAttribute('href') : '';
+      
+        const { name, location, isMale } = (() => {
+          const petDetailsGenderElements = card.querySelectorAll('.pet-details-gendar');
+          let isMale = false;
+          let location = '';
+      
+          // Iterate through the elements and check their content
+          petDetailsGenderElements.forEach(element => {
+            const textContent = element.innerText;
+      
+            // Check if the element contains the word "זכר"
+            if (textContent.includes('זכר')) {
+              isMale = true;
+            }
+      
+            // Check if the element contains specific location text
+            if (!textContent.includes('זכר') && !textContent.includes('נקבה')) {
+              location = textContent;
+            }
           });
-          
+      
+          return { 
+            name: (() => {
+                const h3Element = card.querySelector('h3 a');
+                if (h3Element) {
+                  const href = h3Element.getAttribute('href');
+                  const petParam = new URL(href).searchParams.get('pet');
+              
+                  // Extract only the part before the hyphen
+                  return petParam.split('-')[0] || '';
+                }
+                return '';
+              })(),
+            location,
+            isMale
+          };
+        })();
+      
+        return { name, description: textLines[1] || '', imgSrc, location, isMale, href };
+      });
     });
 
-    await browser.close();
+    cardDetails.push(...pageCardDetails);
+    const nextButton = await page.$('a[href*="paged=' + (currentPage + 1) + '"]');
 
-    return cardDetails;
+    if (nextButton) {
+      // Click the "הבא" (Next) link to load the next page
+      await Promise.all([
+        page.waitForNavigation(), // Wait for the page to navigate
+        nextButton.click(),
+      ]);
+      currentPage++;
+    } else {
+      break;
+    }
+  } while (true);
+
+  await browser.close();
+
+  return cardDetails;
 }
+
+
+
+// async function fetchDataFromLetLive() {
+//     const browser = await puppeteer.launch();
+//     const page = await browser.newPage();
+//     await page.goto('https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat', { timeout: 20000 });
+
+//     const cardDetails = await page.evaluate(() => {
+//         const cards = Array.from(document.querySelectorAll('.pet-details'));
+
+//         return cards.map(card => {
+//             const imgElement = card.querySelector('img');
+//             const imgSrc = imgElement ? imgElement.src : '';
+          
+//             const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
+//             const anchorTag = card.querySelector('a');
+//             const href = anchorTag ? anchorTag.getAttribute('href') : '';
+          
+//             const { name, location, isMale } = (() => {
+//               const petDetailsGenderElements = card.querySelectorAll('.pet-details-gendar');
+//               let isMale = false;
+//               let location = '';
+          
+//               // Iterate through the elements and check their content
+//               petDetailsGenderElements.forEach(element => {
+//                 const textContent = element.innerText;
+          
+//                 // Check if the element contains the word "זכר"
+//                 if (textContent.includes('זכר')) {
+//                   isMale = true;
+//                 }
+          
+//                 // Check if the element contains specific location text
+//                 if (!textContent.includes('זכר') && !textContent.includes('נקבה')) {
+//                   location = textContent;
+//                 }
+//               });
+          
+//               return { 
+//                 name: (() => {
+//                     const h3Element = card.querySelector('h3 a');
+//                     if (h3Element) {
+//                       const href = h3Element.getAttribute('href');
+//                       const petParam = new URL(href).searchParams.get('pet');
+                  
+//                       // Extract only the part before the hyphen
+//                       return petParam.split('-')[0] || '';
+//                     }
+//                     return '';
+//                   })(),
+//                 location,
+//                 isMale
+//               };
+//             })();
+          
+//             return { name, description: textLines[1] || '', imgSrc, location, isMale, href };
+//           });
+          
+//     });
+
+//     await browser.close();
+
+//     return cardDetails;
+// }
 
