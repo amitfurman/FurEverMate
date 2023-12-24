@@ -13,10 +13,9 @@ let combinedData = []; // Declare combinedData globally
 // Define an async function to fetch and cache the data
 async function fetchDataAndCache() {
   const sospetsData = await fetchDataFromSospets();
-  //const letliveData = await fetchDataFromLetLive();
+  const letliveData = await fetchDataFromLetLive();
   const rlaData = await fetchDataFromRla();
-  combinedData = sospetsData.concat(rlaData);
-  //combinedData = sospetsData.concat(letliveData, rlaData);
+  combinedData = sospetsData.concat(letliveData, rlaData);
   console.log('finished fetching data');
   fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
 }
@@ -172,7 +171,7 @@ async function fetchDataFromLetLive() {
 }
 
 async function fetchDataFromRla() {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto('https://www.rla.org.il/adoption/cats/', { timeout: 20000 });
 
@@ -184,7 +183,7 @@ async function fetchDataFromRla() {
       const imgSrc = imgElement ? imgElement.src : '';
 
       const nameElement = card.querySelector('.ui--content-box-title-text');
-      const name = nameElement ? nameElement.textContent : 'hi';
+      const name = nameElement ? nameElement.textContent : '';
 
       const location = 'ראשון אוהבת חיות';
 
@@ -195,22 +194,33 @@ async function fetchDataFromRla() {
     });
   });
 
-  // Extract additional data from each card using the main page
-  const detailedCardDetails = await Promise.all(cardDetails.map(async card => {
+  const detailedCardDetails = [];
+  for (const card of cardDetails) {
     const newPage = await browser.newPage();
-    await newPage.goto(card.href, { timeout: 80000 }); 
+    try {
+      await newPage.goto(card.href, { timeout: 80000 });
+      const description = await newPage.$eval('.ui--tagline-content p', element => element.innerText);
 
-    const description = await newPage.$eval('.ui--tagline-content p', element => element.innerText);
-    console.log('Description:', description);
-    await newPage.close();
+      const keywords = ['בן', 'זכר', 'הוא', 'אותו'];
+      const isMale = keywords.some(keyword => description.includes(keyword)) && !description.includes('היא');
+      detailedCardDetails.push({ ...card, description, isMale });
+    } catch (error) {
+      console.error(`Error processing page ${card.href}: ${error.message}`);
+    } finally {
+      await newPage.close();
+    }
+  }
+  // const detailedCardDetails = await Promise.all(cardDetails.map(async card => {
+  //   const newPage = await browser.newPage();
+  //   await newPage.goto(card.href, { timeout: 80000 }); 
 
-    const keywords = ['בן', 'זכר', 'הוא', 'אותו'];
-    const isMale = keywords.some(keyword => description.includes(keyword)) && !description.includes('היא');
-    console.log('isMale:', isMale);
-    return { ...card, description, isMale };
-  }));
+  //   const description = await newPage.$eval('.ui--tagline-content p', element => element.innerText);
+  //   await newPage.close();
 
-  console.log(detailedCardDetails);
+  //   const keywords = ['בן', 'זכר', 'הוא', 'אותו'];
+  //   const isMale = keywords.some(keyword => description.includes(keyword)) && !description.includes('היא');
+  //   return { ...card, description, isMale };
+  // }));
 
   await browser.close();
   return detailedCardDetails;
