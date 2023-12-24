@@ -13,10 +13,11 @@ let combinedData = []; // Declare combinedData globally
 // Define an async function to fetch and cache the data
 async function fetchDataAndCache() {
   const sospetsData = await fetchDataFromSospets();
-  const letliveData = await fetchDataFromLetLive();
-
-  combinedData = sospetsData.concat(letliveData); // Update combinedData
-
+  //const letliveData = await fetchDataFromLetLive();
+  const rlaData = await fetchDataFromRla();
+  combinedData = sospetsData.concat(rlaData);
+  //combinedData = sospetsData.concat(letliveData, rlaData);
+  console.log('finished fetching data');
   fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
 }
 
@@ -170,68 +171,53 @@ async function fetchDataFromLetLive() {
   return cardDetails;
 }
 
+async function fetchDataFromRla() {
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  await page.goto('https://www.rla.org.il/adoption/cats/', { timeout: 20000 });
+
+  const cardDetails = await page.evaluate(() => {
+    const cards = Array.from(document.querySelectorAll('.span3'));
+
+    return cards.map(card => {
+      const imgElement = card.querySelector('img');
+      const imgSrc = imgElement ? imgElement.src : '';
+
+      const nameElement = card.querySelector('.ui--content-box-title-text');
+      const name = nameElement ? nameElement.textContent : 'hi';
+
+      const location = 'ראשון אוהבת חיות';
+
+      const anchorTag = card.querySelector('a');
+      const href = anchorTag ? anchorTag.getAttribute('href') : '';
+
+      return { name, imgSrc, location, href };
+    });
+  });
+
+  // Extract additional data from each card using the main page
+  const detailedCardDetails = await Promise.all(cardDetails.map(async card => {
+    const newPage = await browser.newPage();
+    await newPage.goto(card.href, { timeout: 80000 }); 
+
+    const description = await newPage.$eval('.ui--tagline-content p', element => element.innerText);
+    console.log('Description:', description);
+    await newPage.close();
+
+    const keywords = ['בן', 'זכר', 'הוא', 'אותו'];
+    const isMale = keywords.some(keyword => description.includes(keyword)) && !description.includes('היא');
+    console.log('isMale:', isMale);
+    return { ...card, description, isMale };
+  }));
+
+  console.log(detailedCardDetails);
+
+  await browser.close();
+  return detailedCardDetails;
+}
 
 
-// async function fetchDataFromLetLive() {
-//     const browser = await puppeteer.launch();
-//     const page = await browser.newPage();
-//     await page.goto('https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat', { timeout: 20000 });
 
-//     const cardDetails = await page.evaluate(() => {
-//         const cards = Array.from(document.querySelectorAll('.pet-details'));
 
-//         return cards.map(card => {
-//             const imgElement = card.querySelector('img');
-//             const imgSrc = imgElement ? imgElement.src : '';
-          
-//             const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
-//             const anchorTag = card.querySelector('a');
-//             const href = anchorTag ? anchorTag.getAttribute('href') : '';
-          
-//             const { name, location, isMale } = (() => {
-//               const petDetailsGenderElements = card.querySelectorAll('.pet-details-gendar');
-//               let isMale = false;
-//               let location = '';
-          
-//               // Iterate through the elements and check their content
-//               petDetailsGenderElements.forEach(element => {
-//                 const textContent = element.innerText;
-          
-//                 // Check if the element contains the word "זכר"
-//                 if (textContent.includes('זכר')) {
-//                   isMale = true;
-//                 }
-          
-//                 // Check if the element contains specific location text
-//                 if (!textContent.includes('זכר') && !textContent.includes('נקבה')) {
-//                   location = textContent;
-//                 }
-//               });
-          
-//               return { 
-//                 name: (() => {
-//                     const h3Element = card.querySelector('h3 a');
-//                     if (h3Element) {
-//                       const href = h3Element.getAttribute('href');
-//                       const petParam = new URL(href).searchParams.get('pet');
-                  
-//                       // Extract only the part before the hyphen
-//                       return petParam.split('-')[0] || '';
-//                     }
-//                     return '';
-//                   })(),
-//                 location,
-//                 isMale
-//               };
-//             })();
-          
-//             return { name, description: textLines[1] || '', imgSrc, location, isMale, href };
-//           });
-          
-//     });
 
-//     await browser.close();
-
-//     return cardDetails;
-// }
 
