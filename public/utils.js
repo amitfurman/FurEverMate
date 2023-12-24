@@ -33,10 +33,13 @@ function toggleHeart(catId) {
 
 function sortAndFilterCards(cardDetails) {
     // Get the selected options from the checkboxes
-    const selectedOptions = getSelectedOptions();
-    console.log('Selected options:', selectedOptions);
+    const selectedOptions = getSelectedArea();
+    const selectedGender = getSelectedGender();
 
-    // Map user-friendly names to actual locations
+    console.log('Selected area:', selectedOptions);
+    console.log('Selected gender:', selectedGender);
+
+
    // const mappedOptions = selectedOptions.map(option => locationMapping[option]);
    const mappedOptions = selectedOptions.flatMap(option => {
     const mappedValue = locationMapping[option];
@@ -58,7 +61,15 @@ function sortAndFilterCards(cardDetails) {
         } else {
             // Modify the condition based on your filtering logic
             // Check if the card's location is included in the selected options
-            return mappedOptions.includes(card.location);
+            const locationMatch = mappedOptions.includes(card.location);
+            // Check if both "female" and "male" are selected, or either one is selected
+            const genderMatch = (selectedOptions.includes('female') && selectedOptions.includes('male')) ||
+                                (selectedOptions.includes('female') ? card.isMale === false :
+                                selectedOptions.includes('male') ? card.isMale === true :
+                                true); // Show all genders if neither "female" nor "male" is selected
+
+
+            return locationMatch && genderMatch;
         }
     });
 
@@ -76,12 +87,20 @@ function sortAndFilterCards(cardDetails) {
 
 }
 
-function getSelectedOptions() {
+function getSelectedArea() {
     const checkboxes = Array.from(document.querySelectorAll('.filter-checkbox'));
     const selectedOptions = checkboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 
     return selectedOptions;
 }
+
+function getSelectedGender() {
+  const genderCheckboxes = Array.from(document.querySelectorAll('.filter-gender-checkbox'));
+  const selectedGender = genderCheckboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+
+  return selectedGender;
+}
+
 
 // Helper function to create HTML elements for the cards
 function createCardElement(card, index) {

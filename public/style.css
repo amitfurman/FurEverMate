@@ -126,7 +126,7 @@ a {
 #product1 .row .info h5 {
     font-size: 15px;
     font-weight: 600;
-    color: #abd9d9;
+    color: #9bcbcb;
     margin-bottom: 5px;
 }
 
@@ -189,10 +189,11 @@ a {
 }
   
 .filter-category {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
     direction: rtl; /* Right-to-left direction for Hebrew text */
+    color: #9bcbcb;
 
 }
 .filter-checkbox {
@@ -218,8 +219,11 @@ a {
 
 /* Add styles for checked checkboxes to mimic the image */
 .filter-checkbox:checked + label {
-    background-image: url('checked-icon-path'); /* Path to the checked icon */
-    padding-left: 25px; /* Adjust based on the size of the icon */
+    background-image: url('checked-icon-path');
+    padding-left: 25px; 
     background-repeat: no-repeat;
     background-position: left center;
+    color: #ff8d78;
 }
+
+
