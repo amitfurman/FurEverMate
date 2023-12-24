@@ -1,16 +1,17 @@
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
-    font-family: 'Nunito', sans-serif;
     list-style: none;
     text-decoration: none;
 }
 
 body {
-    /* background-color: #FCF6F5;  */
     background-color: #f5f5f5;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400; 
 }
 
 
@@ -29,40 +30,7 @@ a {
     color: inherit; /* Use the text color of the parent */
     text-decoration: none; /* Remove underline */
     /* cursor: pointer; Show pointer cursor on hover */
-  }
-  
-
-/* Add this CSS to your existing styles or create a new style file */
-/* .sort-options-container {
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd; 
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-  }
-  .filter-options {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .filter-checkbox-label {
-    display: inline-block;
-    margin-right: 10px;
-  }
-
-  .sidebar {
-    width: 250px;
-    background-color: #f8f8f8;
-    padding: 20px;
-    border-right: 1px solid #e0e0e0;
-  } */
-  
-  
+}
 
 #product1 {
     text-align: center;
@@ -167,7 +135,9 @@ a {
     background-color: #f8f8f8; 
     padding: 20px;
     border-right: 1px solid #e0e0e0;
-  }
+    font-weight: 500;
+ 
+}
 
 .sidebar {
     background-color: #f8f8f8; /* or any color you want */
@@ -226,4 +196,10 @@ a {
     color: #ff8d78;
 }
 
+.cat-name {
+    font-size: 20px;
+    font-weight: bold;
+    /* font-family: 'Secular One', sans-serif; */
+
+}
 
