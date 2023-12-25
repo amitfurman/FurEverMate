@@ -15,7 +15,9 @@ async function fetchDataAndCache() {
   const sospetsData = await fetchDataFromSospets();
   const letliveData = await fetchDataFromLetLive();
   const rlaData = await fetchDataFromRla();
-  combinedData = sospetsData.concat(letliveData, rlaData);
+  const petProtectHaifaData = await fetchDataFromPetProtectHaifa();
+  combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
+
   console.log('finished fetching data');
   fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
 }
@@ -210,21 +212,62 @@ async function fetchDataFromRla() {
       await newPage.close();
     }
   }
-  // const detailedCardDetails = await Promise.all(cardDetails.map(async card => {
-  //   const newPage = await browser.newPage();
-  //   await newPage.goto(card.href, { timeout: 80000 }); 
-
-  //   const description = await newPage.$eval('.ui--tagline-content p', element => element.innerText);
-  //   await newPage.close();
-
-  //   const keywords = ['בן', 'זכר', 'הוא', 'אותו'];
-  //   const isMale = keywords.some(keyword => description.includes(keyword)) && !description.includes('היא');
-  //   return { ...card, description, isMale };
-  // }));
 
   await browser.close();
   return detailedCardDetails;
 }
+
+async function fetchDataFromPetProtectHaifa() {
+  const baseUrl = 'http://www.petprotect.org.il';
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  await page.goto(`${baseUrl}/adopt-cat`, { timeout: 20000 });
+
+  const cardDetails = await page.evaluate(baseUrl => {
+    const cards = Array.from(document.querySelectorAll('.quadruple'));
+
+    return cards.map(card => {
+      const imgElement = card.querySelector('img');
+      const imgSrc = imgElement ? imgElement.src : '';
+
+      const nameElement = card.querySelector('h2');
+      const name = nameElement ? nameElement.textContent.trim() : '';
+
+      const location = 'אגודת צער בעלי חיים חיפה';
+
+      const anchorTag = card.querySelector('a');
+      const relativeHref = anchorTag ? anchorTag.getAttribute('href') : '';
+      const href = baseUrl + relativeHref;
+
+      return { name, imgSrc, location, href };
+    });
+  }, baseUrl);
+
+  const detailedCardDetails = [];
+  for (const card of cardDetails) {
+    const newPage = await browser.newPage();
+    try {
+      await newPage.goto(card.href, { timeout: 80000 });
+
+      const description = await newPage.$eval('.titledog + p', paragraph => paragraph.textContent);
+
+      const dogDataElement = await newPage.$('.dogdata');
+      const secondDivText = await newPage.evaluate(el => el.children[1].textContent, dogDataElement);
+      const isMale = secondDivText.includes('זכר');
+
+      detailedCardDetails.push({ ...card, description, isMale });
+    } catch (error) {
+      console.error(`Error processing page ${card.href}: ${error.message}`);
+    } finally {
+      await newPage.close();
+    }
+  }
+
+  await browser.close();
+  return detailedCardDetails;
+}
+
 
 
 
