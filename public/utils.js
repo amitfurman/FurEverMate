@@ -28,6 +28,7 @@ function toggleHeart(catId) {
   const locationMapping = {
     'north': 'תנו לחיות לחיות צפון',
     'center': ['SOS הרצליה', 'תנו לחיות לחיות מרכז','כלביית כפר רות','ראשון אוהבת חיות'],
+    'hasharon': 'תנו לחיות לחיות שרון',
     'south': 'תנו לחיות לחיות דרום',
 };
 
@@ -79,12 +80,27 @@ function sortAndFilterCards(cardDetails) {
     const cardsContainer = document.querySelector('.cats-container');
     cardsContainer.innerHTML = '';
 
-    // Render the filtered cards
-    filteredCards.forEach((card, index) => {
-        const cardElement = createCardElement(card, index);
-        cardsContainer.appendChild(cardElement);
-    });
+    if (filteredCards.length === 0) {
+      const noResultsMessage = document.createElement('div');
+      noResultsMessage.classList.add('no-results-message');
 
+      const boldLine = document.createElement('p');
+      boldLine.classList.add('bold-line');
+      boldLine.textContent = '): לא נמצאו חתולים שעונים על הקריטריונים שביקשת ';
+
+      const regularLine = document.createElement('p');
+      regularLine.textContent = 'אנא נסה חיפוש אחר';
+
+      noResultsMessage.appendChild(boldLine);
+      noResultsMessage.appendChild(regularLine);
+      cardsContainer.appendChild(noResultsMessage);
+  } else {
+      // Render the filtered cards
+      filteredCards.forEach((card, index) => {
+          const cardElement = createCardElement(card, index);
+          cardsContainer.appendChild(cardElement);
+      });
+  }
 }
 
 function getSelectedArea() {
