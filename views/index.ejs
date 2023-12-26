@@ -57,7 +57,7 @@
   </head>
   <body>
     <header>
-      <a href="/" class="logo"><img src="/logo.png" alt="" /></a>
+      <a href="/" class="logo"><img src="/logo2.png" alt="" /></a>
     </header>
     <div class="content-container">
       <aside class="sidebar">
@@ -114,7 +114,7 @@
                 type="checkbox"
                 id="filter-female"
                 value="female"
-                class="filter-checkbox"
+                class="filter-checkbox filter-gender-checkbox"
                 onclick="fetchAndFilterCards()"
               />
             </div>
@@ -124,7 +124,7 @@
                 type="checkbox"
                 id="filter-male"
                 value="male"
-                class="filter-checkbox"
+                class="filter-checkbox filter-gender-checkbox"
                 onclick="fetchAndFilterCards()"
               />
             </div>
@@ -133,6 +133,10 @@
       </aside>
       <div class="main-content">
         <section id="product1" class="cats">
+          <!-- <h2 class="section-title">חתולים לאימוץ</h2>
+          <div id="totalCatsContainer">
+            <p>Total Cats: <%= cardDetails.length %></p>
+          </div> -->
           <div class="cats-container">
             <% cardDetails.forEach((card, index) => { %>
             <div class="row">

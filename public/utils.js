@@ -55,24 +55,18 @@ function sortAndFilterCards(cardDetails) {
   });
     console.log('Mapped options:', mappedOptions);
 
-    // Filter the cards based on the selected options
+// Filter the cards based on the selected options
     const filteredCards = cardDetails.filter(card => {
-        if (mappedOptions.length === 0) {
-            return true; // Show all cards if no checkbox is selected
-        } else {
-            // Modify the condition based on your filtering logic
-            // Check if the card's location is included in the selected options
-            const locationMatch = mappedOptions.includes(card.location);
-            // Check if both "female" and "male" are selected, or either one is selected
-            const genderMatch = (selectedOptions.includes('female') && selectedOptions.includes('male')) ||
-                                (selectedOptions.includes('female') ? card.isMale === false :
-                                selectedOptions.includes('male') ? card.isMale === true :
-                                true); // Show all genders if neither "female" nor "male" is selected
+      const locationMatch = mappedOptions.length === 0 || mappedOptions.includes(card.location);
 
+      // Check if both "female" and "male" are selected, or either one is selected
+      const genderMatch = selectedGender.length === 0 ||
+                        (selectedGender.includes('female') && selectedGender.includes('male')) ||
+                        (selectedGender.includes(card.isMale ? 'male' : 'female') && card.isMale === (selectedGender.includes('male')));
 
-            return locationMatch && genderMatch;
-        }
+      return locationMatch && genderMatch;
     });
+
 
     console.log('Filtered cards:', filteredCards);
 

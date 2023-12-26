@@ -20,7 +20,7 @@ body {
 }
 
 header {
-    text-align: left; /* Align the header content to the left */
+    text-align: center; /* Align the header content to the left */
     margin-bottom: 20px; /* Add some space between the header and .cats section */
     background-color: #ffeae2;
 }
@@ -42,6 +42,8 @@ a {
     flex-wrap: wrap; 
     /* justify-content: space-between; */
     padding-top: 20px;
+    margin-left: 12px;
+
 }
 
 #product1 .row {
@@ -198,5 +200,17 @@ a {
   
   .bold-line {
     font-weight: bold;
+  }
+  
+  #totalCatsContainer {
+    text-align: right;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  #totalCatsContainer p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #9bcbcb;
   }
   
