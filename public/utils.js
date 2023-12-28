@@ -74,7 +74,7 @@ function sortAndFilterCards(cardDetails) {
     const totalCatsContainer = document.getElementById('totalCatsContainer');
     
 
-    totalCatsContainer.innerHTML = `<p>&rlm;חתולים לאימוץ ${filteredCards.length}</p>`;
+    totalCatsContainer.innerHTML = `<div class="centered-text"><p class="left-aligned">${filteredCards.length} חתולים לאימוץ</p></div>`;
     
 
     // Clear existing cards

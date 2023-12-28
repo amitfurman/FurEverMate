@@ -221,3 +221,13 @@ a {
     color: #000000;
     margin-bottom: 10px;
   }
+
+  .centered-text {
+    text-align: center;
+  }
+  
+  .left-aligned {
+    display: inline-block;
+    text-align: left;
+  }
+  
