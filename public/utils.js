@@ -17,6 +17,7 @@ function toggleHeart(catId) {
         const response = await fetch('/combinedData'); // Now fetching from the new endpoint
         const data = await response.json();
 
+        saveFiltersToLocalStorage();
         // Call sortAndFilterCards with the retrieved data
         sortAndFilterCards(data);
     } catch (error) {
@@ -103,6 +104,40 @@ function sortAndFilterCards(cardDetails) {
       });
   }
 }
+
+function saveFiltersToLocalStorage() {
+  const selectedArea = getSelectedArea();
+  const selectedGender = getSelectedGender();
+
+  const filters = {
+    selectedArea,
+    selectedGender,
+  };
+
+  localStorage.setItem('catFilters', JSON.stringify(filters));
+}
+
+function loadFiltersFromLocalStorage() {
+  const storedFilters = localStorage.getItem('catFilters');
+
+  if (storedFilters) {
+    const filters = JSON.parse(storedFilters);
+
+    // Set the checkboxes based on the stored filters
+    setCheckboxes('filter-checkbox', filters.selectedArea);
+    setCheckboxes('filter-gender-checkbox', filters.selectedGender);
+  }
+}
+
+function setCheckboxes(className, selectedValues) {
+  const checkboxes = document.querySelectorAll(`.${className}`);
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = selectedValues.includes(checkbox.value);
+  });
+}
+
+
 
 function getSelectedArea() {
     const checkboxes = Array.from(document.querySelectorAll('.filter-checkbox'));

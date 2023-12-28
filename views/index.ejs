@@ -179,5 +179,11 @@
       </aside>
     </div>
     <script src="/utils.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        loadFiltersFromLocalStorage();
+        fetchAndFilterCards();
+      });
+    </script>
   </body>
 </html>

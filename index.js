@@ -162,7 +162,6 @@ async function fetchDataFromLetLive() {
               isMale
             };
           })();
-        
           return { name, description: textLines[1] || '', imgSrc, location, isMale, href };
         });
       });
