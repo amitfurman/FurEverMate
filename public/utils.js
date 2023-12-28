@@ -70,6 +70,13 @@ function sortAndFilterCards(cardDetails) {
 
     console.log('Filtered cards:', filteredCards);
 
+    // Update the total cats count
+    const totalCatsContainer = document.getElementById('totalCatsContainer');
+    
+
+    totalCatsContainer.innerHTML = `<p>&rlm;חתולים לאימוץ ${filteredCards.length}</p>`;
+    
+
     // Clear existing cards
     const cardsContainer = document.querySelector('.cats-container');
     cardsContainer.innerHTML = '';
