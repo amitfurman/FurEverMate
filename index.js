@@ -7,19 +7,16 @@ const PORT = 3000;
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-let combinedData = []; // Declare combinedData globally
-
-
-// Define an async function to fetch and cache the data
+let combinedData = []; 
 
 async function fetchDataAndCache() {
   try {
     const sospetsData = await fetchDataFromSospets();
-    const letliveData = await fetchDataFromLetLive();
-    const rlaData = await fetchDataFromRla();
+    // const letliveData = await fetchDataFromLetLive();
+    // const rlaData = await fetchDataFromRla();
     const petProtectHaifaData = await fetchDataFromPetProtectHaifa();
-    
-   combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
+    combinedData = sospetsData.concat(petProtectHaifaData);    
+    // combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
     
     console.log('Finished fetching data');
     fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
@@ -28,7 +25,6 @@ async function fetchDataAndCache() {
   }
 }
 
-// Call the fetchDataAndCache function right after setting up the server
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
   await fetchDataAndCache();
@@ -36,11 +32,10 @@ app.listen(PORT, async () => {
 
 app.get('/', async (req, res) => {
     try {
-        // Render the index.ejs template with the combined data
-        res.render('index.ejs', { cardDetails: combinedData });
+      res.render('index.ejs', { cardDetails: combinedData });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+      console.error(error);
+      res.status(500).send('Internal Server Error');
     }
 });
 
@@ -55,20 +50,22 @@ app.get('/combinedData', (req, res) => {
     }
 });
 
+function handleError(message, error) {
+  console.error(`${message}: ${error.message}`);
+  return []; 
+}
 
 async function fetchDataFromSospets() {
   const browser = await puppeteer.launch();
-  const page = await browser.newPage();
 
   try {
+    const page = await browser.newPage();
     await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
 
     let isDisabled = await page.evaluate(() => document.querySelector('.kuTaGy').disabled);
-
     while (await page.$('.kuTaGy') && !isDisabled) {
       await page.click('.kuTaGy');
       await page.waitForTimeout(500);
-      
       isDisabled = await page.evaluate(() => document.querySelector('.kuTaGy').disabled);
     }
 
@@ -76,8 +73,8 @@ async function fetchDataFromSospets() {
         const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
 
         return cards.map(card => {
-            const imgElement = card.querySelector('img');
-            const imgSrc = imgElement ? imgElement.src : '';
+          const imgElement = card.querySelector('img');
+          const imgSrc = imgElement ? imgElement.src : '';
 
             const textLines = card.innerText.split('\n\n').slice(0, 2);
             const name = textLines[0] || '';
@@ -95,8 +92,7 @@ async function fetchDataFromSospets() {
 
     return cardDetails;
   } catch (error) {
-    console.error(`Error fetching data from Sospets: ${error.message}`);
-    return []; // Return an empty array in case of an error
+    return handleError('Error fetching data from Sospets', error);
   } finally {
     await browser.close();
   }
@@ -108,7 +104,6 @@ async function fetchDataFromLetLive() {
   const page = await browser.newPage();
   const baseUrl = 'https://www.letlive.org.il/?post_type=pet&pet-cat=pc-cat';
   let currentPage = 1;
-
   const cardDetails = [];
 
   try {
@@ -121,7 +116,7 @@ async function fetchDataFromLetLive() {
         return cards.map(card => {
           const imgElement = card.querySelector('img');
           const imgSrc = imgElement ? imgElement.src : '';
-        
+
           const textLines = card.innerText.split('\n\n').slice(0, 2) || '';
           const anchorTag = card.querySelector('a');
           const href = anchorTag ? anchorTag.getAttribute('href') : '';
@@ -131,16 +126,11 @@ async function fetchDataFromLetLive() {
             let isMale = false;
             let location = '';
         
-            // Iterate through the elements and check their content
             petDetailsGenderElements.forEach(element => {
               const textContent = element.innerText;
-        
-              // Check if the element contains the word "זכר"
               if (textContent.includes('זכר')) {
                 isMale = true;
               }
-        
-              // Check if the element contains specific location text
               if (!textContent.includes('זכר') && !textContent.includes('נקבה')) {
                 location = textContent;
               }
@@ -152,8 +142,6 @@ async function fetchDataFromLetLive() {
                   if (h3Element) {
                     const href = h3Element.getAttribute('href');
                     const petParam = new URL(href).searchParams.get('pet');
-                
-                    // Extract only the part before the hyphen
                     return petParam.split('-')[0] || '';
                   }
                   return '';
@@ -170,9 +158,8 @@ async function fetchDataFromLetLive() {
       const nextButton = await page.$('a[href*="paged=' + (currentPage + 1) + '"]');
 
       if (nextButton) {
-        // Click the "הבא" (Next) link to load the next page
         await Promise.all([
-          page.waitForNavigation(), // Wait for the page to navigate
+          page.waitForNavigation(),
           nextButton.click(),
         ]);
         currentPage++;
@@ -183,8 +170,7 @@ async function fetchDataFromLetLive() {
 
     return cardDetails;
   } catch (error) {
-    console.error(`Error fetching data from LetLive: ${error.message}`);
-    return []; // Return an empty array in case of an error
+    return handleError('Error fetching data from Letlive', error);
   } finally {
     await browser.close();
   }
@@ -236,8 +222,7 @@ async function fetchDataFromRla() {
 
     return detailedCardDetails;
   } catch (error) {
-    console.error(`Error fetching data from Rla: ${error.message}`);
-    return []; // Return an empty array in case of an error
+    return handleError('Error fetching data from Rla', error);
   } finally {
     await browser.close();
   }
@@ -294,12 +279,13 @@ async function fetchDataFromPetProtectHaifa() {
 
     return detailedCardDetails;
   } catch (error) {
-    console.error(`Error fetching data from PetProtectHaifa: ${error.message}`);
-    return []; // Return an empty array in case of an error
+    return handleError('Error fetching data from PetProtectHaifa', error);
   } finally {
     await browser.close();
   }
 }
+
+
 
 
 

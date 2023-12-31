@@ -11,23 +11,18 @@
 body {
     background-color: #f5f5f5;
     font-family: 'Assistant', sans-serif;
-    font-weight: 400; 
-}
-
-
-.logo img {
-    width: 130px;
+    font-weight: 400;
 }
 
 header {
-    text-align: center; /* Align the header content to the left */
-    margin-bottom: 20px; /* Add some space between the header and .cats section */
+    text-align: center;
+    margin-bottom: 20px;
     background-color: #ffeae2;
 }
 
 a {
-    color: inherit; 
-    text-decoration: none; 
+    color: inherit;
+    text-decoration: none;
 }
 
 #product1 {
@@ -40,13 +35,12 @@ a {
 #product1 .cats-container{
     display: flex;
     flex-wrap: wrap; 
-    /* justify-content: space-between; */
     padding-top: 20px;
     margin-left: 12px;
 
 }
 
-#product1 .row {
+#product1 .cat {
     width: 20%;
     min-width: 240px ;
     padding: 20px 12px 16px 10px;
@@ -59,30 +53,32 @@ a {
     border-color: #efefef;
 }
 
-#product1 .row:hover {
+#product1 .cat:hover {
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.06);
     border-color: #ff8d78;
     border-width: 2px;
-
-
 }
 
-.row img {
+.cat img {
     width: 200px;
     height: 250px;
     border-radius: 15px;
 }
 
-.row .info {
+.cat .info {
     text-align: center;
     padding: 10px 0;
 }
 
-#product1 .row .info h5 {
+#product1 .cat .info h5 {
     font-size: 15px;
     font-weight: 600;
     color: #9bcbcb;
     margin-bottom: 5px;
+}
+
+.logo img {
+    width: 130px;
 }
 
 .male-sign, .female-sign {
@@ -107,23 +103,12 @@ a {
 .content-container {
     display: flex;
     flex-direction: row-reverse; 
-    /* flex-wrap: wrap;*/
     justify-content: space-between; 
-  }
-  
-  .main-content {
+}
+
+.main-content {
     flex-grow: 1;
     width: calc(100% - 320px);
-  }
-
-.filter-section {
-    position: sticky;
-    top: 0;
-    background-color: #f8f8f8; 
-    padding: 20px;
-    border-right: 1px solid #e0e0e0;
-    font-weight: 500;
- 
 }
 
 .sidebar {
@@ -138,13 +123,22 @@ a {
     top: 0;
 }
 
+.filter-section {
+    position: sticky;
+    top: 0;
+    background-color: #f8f8f8; 
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+    font-weight: 500;
+}
+
 .filter-options div{
     display: flex;
     flex-direction: row-reverse; 
     align-items: center; 
     justify-content: flex-end; 
 }
-  
+ 
 .filter-category {
     font-size: 18px;
     font-weight: bold;
@@ -157,29 +151,13 @@ a {
     margin-left: 5px;
     margin-right: 10px;
 }
-  
 
-.filter-checkbox-label, .checkbox-container {
-    display: block;
-    align-items: center; 
-    cursor: pointer;
-    direction: rtl; 
-  }
-  
 .checkbox-container {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start; 
     margin-bottom: 12px; 
     align-items: center;
-}
-
-.filter-checkbox:checked + label {
-    background-image: url('checked-icon-path');
-    padding-left: 25px; 
-    background-repeat: no-repeat;
-    background-position: left center;
-    color: #ff8d78;
 }
 
 .cat-name {
@@ -189,45 +167,60 @@ a {
 
 .no-results-message {
     text-align: center;
-    margin-top: 50px; /* Adjust as needed */
+    margin-top: 50px;
     width: 100%; 
-
-  }
+}
   
-  .no-results-message p {
-    margin: 0; /* Remove default margin for paragraphs */
-  }
-  
-  .bold-line {
+.bold-line {
     font-weight: bold;
-  }
+}
   
-  #totalCatsContainer {
+#totalCatsContainer {
     direction: rtl;
     text-align: center;
     margin-left: 12px;
     padding: 5px;
-  }
+}
   
-  #totalCatsContainer p {
+#totalCatsContainer p {
     font-size: 16px;
     font-weight: bold;
     color: #9bcbcb;
-  }
+}
   
-  .section-title {
+.section-title {
     font-size: 22px;
     font-weight: bold;
     color: #000000;
     margin-bottom: 10px;
-  }
+}
 
-  .centered-text {
+.centered-text {
     text-align: center;
-  }
+}
   
-  .left-aligned {
+.left-aligned {
     display: inline-block;
     text-align: left;
+}
+  
+
+
+/* .filter-checkbox-label, .checkbox-container {
+    display: block;
+    align-items: center; 
+    cursor: pointer;
+    direction: rtl; 
   }
   
+ .filter-checkbox:checked + label {
+    background-image: url('checked-icon-path');
+    padding-left: 25px; 
+    background-repeat: no-repeat;
+    background-position: left center;
+    color: #ff8d78;
+} 
+
+.no-results-message p {
+    margin: 0; 
+} */

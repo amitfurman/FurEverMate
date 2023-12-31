@@ -1,15 +1,35 @@
+let favoriteCats = [];
 
-function toggleHeart(catId) {
+// function toggleHeart(catId) {
+//     console.log('toggleHeart called with catId:', catId);
+//     var heartIcon = document.getElementById('heart-' + catId);
+//     if (heartIcon.classList.contains('fas')) {
+//       heartIcon.classList.replace('fas', 'far');
+//       heartIcon.classList.remove('red-heart');
+//       favoriteCats.push(catId);
+//     } else {
+//       heartIcon.classList.replace('far', 'fas');
+//       heartIcon.classList.add('red-heart');
+//       removeFromFavorites(catId);
+//     }
+//     saveFavoriteCatsToLocalStorage();
+//   }
+
+  function toggleHeart(catId) {
     console.log('toggleHeart called with catId:', catId);
     var heartIcon = document.getElementById('heart-' + catId);
+  
     if (heartIcon.classList.contains('fas')) {
       heartIcon.classList.replace('fas', 'far');
       heartIcon.classList.remove('red-heart');
-      favoriteCats.push(catId);
+      removeFromFavorites(catId);
     } else {
+      console.log('inside else');
       heartIcon.classList.replace('far', 'fas');
       heartIcon.classList.add('red-heart');
+      addToFavorites(catId);
     }
+    saveFavoriteCatsToLocalStorage(); // Save favorite cats after toggling
   }
 
   async function fetchAndFilterCards() {
@@ -157,7 +177,7 @@ function getSelectedGender() {
 // Helper function to create HTML elements for the cards
 function createCardElement(card, index) {
     const cardDiv = document.createElement('div');
-    cardDiv.classList.add('row');
+    cardDiv.classList.add('cat');
 
     const cardLink = document.createElement('a');
     cardLink.href = card.href;
@@ -215,5 +235,45 @@ function createCardElement(card, index) {
     return cardDiv;
 }
 
+function addToFavorites(catId) {
+  // Add catId to the favoriteCats array
+  if (!favoriteCats.includes(catId)) {
+    favoriteCats.push(catId);
+  }
+}
 
+function removeFromFavorites(catId) {
+  // Remove catId from the favoriteCats array
+  const index = favoriteCats.indexOf(catId);
+  if (index !== -1) {
+    favoriteCats.splice(index, 1);
+  }
+}
+
+function saveFavoriteCatsToLocalStorage() {
+  // Save the favoriteCats array to local storage
+  localStorage.setItem('favoriteCats', JSON.stringify(favoriteCats));
+}
+
+function loadFavoriteCatsFromLocalStorage() {
+  // Load the favoriteCats array from local storage
+  const storedFavorites = localStorage.getItem('favoriteCats');
+  
+  if (storedFavorites) {
+    favoriteCats = JSON.parse(storedFavorites);
+  }
+}
+
+function updateHeartIcons() {
+  console.log('updateHeartIcons called');
+  // Update heart icons based on the loaded favorite cats
+  favoriteCats.forEach(catId => {
+    const heartIcon = document.getElementById('heart-' + catId);
+    if (heartIcon) {
+      console.log('Updating heart icon for catId:', catId);
+      heartIcon.classList.replace('far', 'fas');
+      heartIcon.classList.add('red-heart');
+    }
+  });
+}
 

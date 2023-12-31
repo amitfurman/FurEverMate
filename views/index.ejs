@@ -70,7 +70,7 @@
           </div>
           <div class="cats-container">
             <% cardDetails.forEach((card, index) => { %>
-            <div class="row">
+            <div class="cat">
               <a
                 href="<%= card.href %>"
                 target="_blank"
@@ -180,9 +180,16 @@
     </div>
     <script src="/utils.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener("DOMContentLoaded", () => {
         loadFiltersFromLocalStorage();
-        fetchAndFilterCards();
+        loadFavoriteCatsFromLocalStorage(); // Load favorite cats when the page loads
+        fetchAndFilterCards()
+          .then(() => {
+            updateHeartIcons(); // Update heart icons based on loaded favorite cats
+          })
+          .catch((error) => {
+            console.error("Error fetching and filtering cards:", error);
+          });
       });
     </script>
   </body>
