@@ -3,6 +3,19 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 const PORT = 3000;
+const mongoose = require('mongoose');
+
+//connect to mongodb
+const dbURI = 'mongodb+srv://amitfurman:Kola7879@furevermate.npjt8jf.mongodb.net/?retryWrites=true&w=majority';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) => {
+    app.listen(PORT, async () => {
+      console.log(`Server is running on port ${PORT}`);
+      await fetchDataAndCache();
+    });
+  })
+  .catch((err) => console.log(err));
+
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -12,11 +25,10 @@ let combinedData = [];
 async function fetchDataAndCache() {
   try {
     const sospetsData = await fetchDataFromSospets();
-    // const letliveData = await fetchDataFromLetLive();
-    // const rlaData = await fetchDataFromRla();
+    const letliveData = await fetchDataFromLetLive();
+    const rlaData = await fetchDataFromRla();
     const petProtectHaifaData = await fetchDataFromPetProtectHaifa();
-    combinedData = sospetsData.concat(petProtectHaifaData);    
-    // combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
+    combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
     
     console.log('Finished fetching data');
     fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
@@ -25,10 +37,7 @@ async function fetchDataAndCache() {
   }
 }
 
-app.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT}`);
-  await fetchDataAndCache();
-});
+
 
 app.get('/', async (req, res) => {
     try {
@@ -97,7 +106,6 @@ async function fetchDataFromSospets() {
     await browser.close();
   }
 }
-
 
 async function fetchDataFromLetLive() {
   const browser = await puppeteer.launch();
@@ -176,7 +184,6 @@ async function fetchDataFromLetLive() {
   }
 }
 
-
 async function fetchDataFromRla() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -227,7 +234,6 @@ async function fetchDataFromRla() {
     await browser.close();
   }
 }
-
 
 async function fetchDataFromPetProtectHaifa() {
   const baseUrl = 'http://www.petprotect.org.il';

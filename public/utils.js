@@ -1,69 +1,42 @@
 let favoriteCats = [];
-
-// function toggleHeart(catId) {
-//     console.log('toggleHeart called with catId:', catId);
-//     var heartIcon = document.getElementById('heart-' + catId);
-//     if (heartIcon.classList.contains('fas')) {
-//       heartIcon.classList.replace('fas', 'far');
-//       heartIcon.classList.remove('red-heart');
-//       favoriteCats.push(catId);
-//     } else {
-//       heartIcon.classList.replace('far', 'fas');
-//       heartIcon.classList.add('red-heart');
-//       removeFromFavorites(catId);
-//     }
-//     saveFavoriteCatsToLocalStorage();
-//   }
-
-  function toggleHeart(catId) {
-    console.log('toggleHeart called with catId:', catId);
-    var heartIcon = document.getElementById('heart-' + catId);
-  
-    if (heartIcon.classList.contains('fas')) {
-      heartIcon.classList.replace('fas', 'far');
-      heartIcon.classList.remove('red-heart');
-      removeFromFavorites(catId);
-    } else {
-      console.log('inside else');
-      heartIcon.classList.replace('far', 'fas');
-      heartIcon.classList.add('red-heart');
-      addToFavorites(catId);
-    }
-    saveFavoriteCatsToLocalStorage(); // Save favorite cats after toggling
-  }
-
-  async function fetchAndFilterCards() {
-    try {
-        const response = await fetch('/combinedData'); // Now fetching from the new endpoint
-        const data = await response.json();
-
-        saveFiltersToLocalStorage();
-        // Call sortAndFilterCards with the retrieved data
-        sortAndFilterCards(data);
-    } catch (error) {
-        console.error('Error fetching data from server:', error);
-    }
-}
-
-  
-  const locationMapping = {
-    'north': ['תנו לחיות לחיות צפון','אגודת צער בעלי חיים חיפה'],
-    'center': ['SOS הרצליה', 'תנו לחיות לחיות מרכז','כלביית כפר רות','ראשון אוהבת חיות'],
-    'hasharon': 'תנו לחיות לחיות שרון',
-    'south': 'תנו לחיות לחיות דרום',
+const locationMapping = {
+  'north': ['תנו לחיות לחיות צפון','אגודת צער בעלי חיים חיפה'],
+  'center': ['SOS הרצליה', 'תנו לחיות לחיות מרכז','כלביית כפר רות','ראשון אוהבת חיות'],
+  'hasharon': 'תנו לחיות לחיות שרון',
+  'south': 'תנו לחיות לחיות דרום',
 };
 
+function toggleHeart(catId) {
+  var heartIcon = document.getElementById('heart-' + catId);
+
+  if (heartIcon.classList.contains('fas')) {
+    heartIcon.classList.replace('fas', 'far');
+    heartIcon.classList.remove('red-heart');
+    removeFromFavorites(catId);
+  } else {
+    heartIcon.classList.replace('far', 'fas');
+    heartIcon.classList.add('red-heart');
+    addToFavorites(catId);
+  }
+  saveFavoriteCatsToLocalStorage();
+}
+
+async function fetchAndFilterCards() {
+  try {
+      const response = await fetch('/combinedData');
+      const data = await response.json();
+
+      saveFiltersToLocalStorage();
+      sortAndFilterCards(data);
+  } catch (error) {
+      console.error('Error fetching data from server:', error);
+  }
+}
+
 function sortAndFilterCards(cardDetails) {
-    // Get the selected options from the checkboxes
     const selectedOptions = getSelectedArea();
     const selectedGender = getSelectedGender();
-
-    console.log('Selected area:', selectedOptions);
-    console.log('Selected gender:', selectedGender);
-
-
-   // const mappedOptions = selectedOptions.map(option => locationMapping[option]);
-   const mappedOptions = selectedOptions.flatMap(option => {
+    const mappedOptions = selectedOptions.flatMap(option => {
     const mappedValue = locationMapping[option];
   
     if (Array.isArray(mappedValue)) {
@@ -74,13 +47,9 @@ function sortAndFilterCards(cardDetails) {
       return [];
     }
   });
-    console.log('Mapped options:', mappedOptions);
 
-// Filter the cards based on the selected options
     const filteredCards = cardDetails.filter(card => {
       const locationMatch = mappedOptions.length === 0 || mappedOptions.includes(card.location);
-
-      // Check if both "female" and "male" are selected, or either one is selected
       const genderMatch = selectedGender.length === 0 ||
                         (selectedGender.includes('female') && selectedGender.includes('male')) ||
                         (selectedGender.includes(card.isMale ? 'male' : 'female') && card.isMale === (selectedGender.includes('male')));
@@ -88,17 +57,10 @@ function sortAndFilterCards(cardDetails) {
       return locationMatch && genderMatch;
     });
 
-
-    console.log('Filtered cards:', filteredCards);
-
-    // Update the total cats count
     const totalCatsContainer = document.getElementById('totalCatsContainer');
     
-
     totalCatsContainer.innerHTML = `<div class="centered-text"><p class="left-aligned">${filteredCards.length} חתולים לאימוץ</p></div>`;
-    
-
-    // Clear existing cards
+   
     const cardsContainer = document.querySelector('.cats-container');
     cardsContainer.innerHTML = '';
 
@@ -117,7 +79,6 @@ function sortAndFilterCards(cardDetails) {
       noResultsMessage.appendChild(regularLine);
       cardsContainer.appendChild(noResultsMessage);
   } else {
-      // Render the filtered cards
       filteredCards.forEach((card, index) => {
           const cardElement = createCardElement(card, index);
           cardsContainer.appendChild(cardElement);
@@ -128,7 +89,6 @@ function sortAndFilterCards(cardDetails) {
 function saveFiltersToLocalStorage() {
   const selectedArea = getSelectedArea();
   const selectedGender = getSelectedGender();
-
   const filters = {
     selectedArea,
     selectedGender,
@@ -143,7 +103,6 @@ function loadFiltersFromLocalStorage() {
   if (storedFilters) {
     const filters = JSON.parse(storedFilters);
 
-    // Set the checkboxes based on the stored filters
     setCheckboxes('filter-checkbox', filters.selectedArea);
     setCheckboxes('filter-gender-checkbox', filters.selectedGender);
   }
@@ -156,8 +115,6 @@ function setCheckboxes(className, selectedValues) {
     checkbox.checked = selectedValues.includes(checkbox.value);
   });
 }
-
-
 
 function getSelectedArea() {
     const checkboxes = Array.from(document.querySelectorAll('.filter-checkbox'));
@@ -173,8 +130,6 @@ function getSelectedGender() {
   return selectedGender;
 }
 
-
-// Helper function to create HTML elements for the cards
 function createCardElement(card, index) {
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('cat');
@@ -236,14 +191,12 @@ function createCardElement(card, index) {
 }
 
 function addToFavorites(catId) {
-  // Add catId to the favoriteCats array
   if (!favoriteCats.includes(catId)) {
     favoriteCats.push(catId);
   }
 }
 
 function removeFromFavorites(catId) {
-  // Remove catId from the favoriteCats array
   const index = favoriteCats.indexOf(catId);
   if (index !== -1) {
     favoriteCats.splice(index, 1);
@@ -251,26 +204,18 @@ function removeFromFavorites(catId) {
 }
 
 function saveFavoriteCatsToLocalStorage() {
-  // Save the favoriteCats array to local storage
   localStorage.setItem('favoriteCats', JSON.stringify(favoriteCats));
 }
 
 function loadFavoriteCatsFromLocalStorage() {
-  // Load the favoriteCats array from local storage
-  const storedFavorites = localStorage.getItem('favoriteCats');
-  
-  if (storedFavorites) {
-    favoriteCats = JSON.parse(storedFavorites);
-  }
+  const favoritesJSON = localStorage.getItem('favoriteCats');
+  return favoritesJSON ? JSON.parse(favoritesJSON) : [];
 }
 
 function updateHeartIcons() {
-  console.log('updateHeartIcons called');
-  // Update heart icons based on the loaded favorite cats
   favoriteCats.forEach(catId => {
     const heartIcon = document.getElementById('heart-' + catId);
     if (heartIcon) {
-      console.log('Updating heart icon for catId:', catId);
       heartIcon.classList.replace('far', 'fas');
       heartIcon.classList.add('red-heart');
     }
