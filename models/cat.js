@@ -24,7 +24,8 @@ const catSchema = new Schema({
     },
     href: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     }
 }, {timestamps: true});
 

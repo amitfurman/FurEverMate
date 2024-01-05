@@ -1,3 +1,4 @@
+require('dotenv').config();
 const puppeteer = require('puppeteer');
 const express = require('express');
 const fs = require('fs');
@@ -5,10 +6,13 @@ const app = express();
 const PORT = 3000;
 const mongoose = require('mongoose');
 
+const dbURI = process.env.MONGO_URI 
+const Cat = require('./models/cat');
+
 //connect to mongodb
-const dbURI = 'mongodb+srv://amitfurman:Kola7879@furevermate.npjt8jf.mongodb.net/?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((result) => {
+    console.log('Connected to MongoDB');
     app.listen(PORT, async () => {
       console.log(`Server is running on port ${PORT}`);
       await fetchDataAndCache();
@@ -29,6 +33,9 @@ async function fetchDataAndCache() {
     const rlaData = await fetchDataFromRla();
     const petProtectHaifaData = await fetchDataFromPetProtectHaifa();
     combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
+    console.log(combinedData);
+    const catInstances = combinedData.map(catData => new Cat(catData));
+    await saveCatsToDatabase(catInstances);
     
     console.log('Finished fetching data');
     fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
@@ -37,11 +44,12 @@ async function fetchDataAndCache() {
   }
 }
 
-
-
 app.get('/', async (req, res) => {
     try {
-      res.render('index.ejs', { cardDetails: combinedData });
+      const catsFromDatabase = await Cat.find();
+
+      res.render('index.ejs', { cardDetails: catsFromDatabase });
+      //res.render('index.ejs', { cardDetails: combinedData });
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
@@ -88,15 +96,20 @@ async function fetchDataFromSospets() {
             const textLines = card.innerText.split('\n\n').slice(0, 2);
             const name = textLines[0] || '';
             const description = textLines[1] || '';
-
-            const location = 'SOS הרצליה';
             const isMale = description.includes('בן');
 
             const anchorTag = card.querySelector('a');
             const href = anchorTag ? anchorTag.getAttribute('href') : '';
 
-            return { name, description, imgSrc, location, isMale, href };
-        });
+            return{
+              name,
+              description,
+              imgSrc,
+              location: 'SOS הרצליה', // Assuming location is always 'SOS הרצליה'
+              isMale,
+              href,
+            };
+         });
     });
 
     return cardDetails;
@@ -226,7 +239,6 @@ async function fetchDataFromRla() {
         await newPage.close();
       }
     }
-
     return detailedCardDetails;
   } catch (error) {
     return handleError('Error fetching data from Rla', error);
@@ -282,7 +294,6 @@ async function fetchDataFromPetProtectHaifa() {
         await newPage.close();
       }
     }
-
     return detailedCardDetails;
   } catch (error) {
     return handleError('Error fetching data from PetProtectHaifa', error);
@@ -291,11 +302,31 @@ async function fetchDataFromPetProtectHaifa() {
   }
 }
 
+async function saveCatsToDatabase(catObjects) {
+  try {
+    const savedCats = await Cat.find();
 
+    const catsToRemove = savedCats.filter(savedCat => {
+      return !catObjects.some(newCat => newCat.href === savedCat.href);
+    });
 
+    // Remove cats that are no longer present on the website
+    for (const catToRemove of catsToRemove) {
+      await Cat.deleteOne({ _id: catToRemove._id });
+      console.log(`Cat '${catToRemove.name}' removed from the database.`);
+    }
 
+    for (const cat of catObjects) {
+      const existingCat = await Cat.findOne({ href: cat.href });
 
-
-
-
-
+      if (!existingCat) {
+        await cat.save();
+        console.log(`New cat '${cat.name}' saved to the database.`);
+      } else {       
+         console.log(`Cat '${cat.name}' is already in the database.`);
+      }
+    }
+  } catch (error) {
+    console.error('Error saving cats to the database:', error);
+  }
+}
