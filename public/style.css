@@ -187,6 +187,7 @@ a {
     margin-bottom: 10px;
     direction: rtl; /* Right-to-left direction for Hebrew text */
     color: #9bcbcb;
+    cursor: pointer;
 
 }
 .filter-checkbox {
@@ -245,24 +246,3 @@ a {
     display: inline-block;
     text-align: left;
 }
-  
-
-
-/* .filter-checkbox-label, .checkbox-container {
-    display: block;
-    align-items: center; 
-    cursor: pointer;
-    direction: rtl; 
-  }
-  
- .filter-checkbox:checked + label {
-    background-image: url('checked-icon-path');
-    padding-left: 25px; 
-    background-repeat: no-repeat;
-    background-position: left center;
-    color: #ff8d78;
-} 
-
-.no-results-message p {
-    margin: 0; 
-} */

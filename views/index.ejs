@@ -116,8 +116,11 @@
       </div>
       <aside class="sidebar">
         <div class="filter-section">
-          <h3 class="filter-category">אזור</h3>
-          <div class="filter-options">
+          <h3 class="filter-category" onclick="toggleFilter('region')">
+            אזור
+            <span id="region-arrow">&#9662;</span>
+          </h3>
+          <div class="filter-options" id="region-options">
             <div class="checkbox-container">
               <label for="filter-north">צפון</label>
               <input
@@ -161,9 +164,10 @@
           </div>
 
           <h3 class="filter-category" onclick="toggleFilter('gender')">
-            מין<span id="gender-arrow">&#9662;</span>
+            מין
+            <span id="gender-arrow">&#9662;</span>
           </h3>
-          <div class="filter-options">
+          <div class="filter-options" id="gender-options">
             <div class="checkbox-container">
               <label for="filter-female">נקבה</label>
               <input
@@ -202,22 +206,27 @@
           });
       });
     </script>
-    <!-- <script>
+    <script>
       function toggleFilter(filterName) {
+        console.log("Toggling filter:", filterName);
         const optionsDiv = document.getElementById(`${filterName}-options`);
         const arrowSpan = document.getElementById(`${filterName}-arrow`);
 
-        if (
-          optionsDiv.style.display === "none" ||
-          optionsDiv.style.display === ""
-        ) {
-          optionsDiv.style.display = "block";
-          arrowSpan.innerHTML = "&#9652;"; // Upward arrow
+        if (optionsDiv && arrowSpan) {
+          if (
+            optionsDiv.style.display === "none" ||
+            optionsDiv.style.display === ""
+          ) {
+            optionsDiv.style.display = "block";
+            arrowSpan.innerHTML = "&#9652;"; // Upward arrow
+          } else {
+            optionsDiv.style.display = "none";
+            arrowSpan.innerHTML = "&#9662;"; // Downward arrow
+          }
         } else {
-          optionsDiv.style.display = "none";
-          arrowSpan.innerHTML = "&#9662;"; // Downward arrow
+          console.error(`Elements not found for filter: ${filterName}`);
         }
       }
-    </script> -->
+    </script>
   </body>
 </html>
