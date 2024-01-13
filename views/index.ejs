@@ -160,7 +160,9 @@
             </div>
           </div>
 
-          <h3 class="filter-category">מין</h3>
+          <h3 class="filter-category" onclick="toggleFilter('gender')">
+            מין<span id="gender-arrow">&#9662;</span>
+          </h3>
           <div class="filter-options">
             <div class="checkbox-container">
               <label for="filter-female">נקבה</label>
@@ -200,5 +202,22 @@
           });
       });
     </script>
+    <!-- <script>
+      function toggleFilter(filterName) {
+        const optionsDiv = document.getElementById(`${filterName}-options`);
+        const arrowSpan = document.getElementById(`${filterName}-arrow`);
+
+        if (
+          optionsDiv.style.display === "none" ||
+          optionsDiv.style.display === ""
+        ) {
+          optionsDiv.style.display = "block";
+          arrowSpan.innerHTML = "&#9652;"; // Upward arrow
+        } else {
+          optionsDiv.style.display = "none";
+          arrowSpan.innerHTML = "&#9662;"; // Downward arrow
+        }
+      }
+    </script> -->
   </body>
 </html>

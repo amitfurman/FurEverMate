@@ -20,6 +20,10 @@ header {
     align-items: center;
     /* margin-bottom: 20px; */
     background-color: #ffeae2;
+    position: sticky;
+    top: 0;
+    margin-bottom: 20px;
+    z-index: 100;
 }
 
 a {
@@ -152,18 +156,18 @@ a {
 .sidebar {
     background-color: #f8f8f8; 
     width: 190px;
-    margin-top: 20px;
     padding: 0;
     box-sizing: border-box;
     height: auto;
     border-right: 1px solid #e0e0e0;
     position: sticky;
-    top: 0;
+    top: 100px; /* Adjust this value to the height of your header */
+    z-index: 1;
 }
 
 .filter-section {
     position: sticky;
-    top: 0;
+    top: 100px;
     background-color: #f8f8f8; 
     padding: 20px;
     border-right: 1px solid #e0e0e0;
