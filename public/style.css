@@ -15,14 +15,11 @@ body {
 }
 
 header {
-    text-align: center;
-    /* display: flex;
-    justify-content: center; */
-    margin-bottom: 20px;
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 20px; */
     background-color: #ffeae2;
-    direction: rtl;
-    padding: 10px 0;
-    height: 75px;
 }
 
 a {
@@ -82,32 +79,41 @@ a {
     margin-bottom: 5px;
 }
 
-.logo-container {
+/* .logo-container {
     float: left; /* Float the logo container to the left */
-  }
 
  .logo {
-    display: inline-block;
+    margin-right: auto;
 }
   
  nav {
-     display: inline-block;
-     vertical-align: middle;
-    /*vertical-align: middle; */
-    /* display: inline-block; */
+    font-weight: bolder;
+    font-size: large;
+    flex: 1;
+    text-align: right;
+    margin-right: 40px;
   }
-  
 
-  ul {
-    list-style: none;
+    nav ul {
+    display: inline-block;
     padding: 0;
     margin: 0;
-  }
+    }
+
+    nav ul li {
+    display: inline;
+    margin-left: 50px;
+    }
+
+    nav ul li:last-child {
+    margin-right: 0;
+    }
+
+    nav ul li.active a {
+        color: #ff8d78; /* Change the color to pink */
+        font-size: 20px;
+      }
   
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
 
 .logo img {
     width: 130px;

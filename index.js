@@ -23,7 +23,11 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-
+app.use((req, res, next) => {
+  const currentRoute = req.originalUrl.replace('/', '') || 'home';
+  res.locals.currentPage = currentRoute;
+  next();
+});
 let combinedData = []; 
 
 async function fetchDataAndCache() {
@@ -62,6 +66,10 @@ app.get('/combinedData', async (req, res) => {
         console.error('Error reading cats from database:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+});
+
+app.get('/about', (req, res) => {
+  res.render('about');
 });
 
 function handleError(message, error) {
