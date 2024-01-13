@@ -16,6 +16,9 @@ body {
 
 header {
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This will vertically align the items in the center */
     margin-bottom: 20px;
     background-color: #ffeae2;
 }
@@ -76,6 +79,30 @@ a {
     color: #9bcbcb;
     margin-bottom: 5px;
 }
+
+ .logo {
+    /* display: inline-block; */
+    /* margin-right: 20px;  */
+    /* margin-right: auto; */
+}
+  
+ nav {
+    /* display: inline-block;
+    vertical-align: middle; */
+    /* display: inline-block; */
+  }
+  
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    /* display: inline-block; */
+    margin: 0 10px;
+  }
 
 .logo img {
     width: 130px;

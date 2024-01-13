@@ -33,36 +33,33 @@ async function fetchDataAndCache() {
     const rlaData = await fetchDataFromRla();
     const petProtectHaifaData = await fetchDataFromPetProtectHaifa();
     combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
-    console.log(combinedData);
     const catInstances = combinedData.map(catData => new Cat(catData));
     await saveCatsToDatabase(catInstances);
     
     console.log('Finished fetching data');
-    fs.writeFileSync('combinedData.json', JSON.stringify(combinedData, null, 2), 'utf-8');
   } catch (error) {
     console.error('Error fetching and caching data:', error.message);
   }
 }
 
 app.get('/', async (req, res) => {
-    try {
+  try {
       const catsFromDatabase = await Cat.find();
 
       res.render('index.ejs', { cardDetails: catsFromDatabase });
-      //res.render('index.ejs', { cardDetails: combinedData });
-    } catch (error) {
+  } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
-    }
+  }
 });
 
-app.get('/combinedData', (req, res) => {
+
+app.get('/combinedData', async (req, res) => {
     try {
-        const rawData = fs.readFileSync('combinedData.json', 'utf-8');
-        const data = JSON.parse(rawData);
-        res.json(data);
+        const catsFromDatabase = await Cat.find();
+        res.json(catsFromDatabase);
     } catch (error) {
-        console.error('Error reading combinedData.json:', error);
+        console.error('Error reading cats from database:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
@@ -311,9 +308,13 @@ async function saveCatsToDatabase(catObjects) {
     });
 
     // Remove cats that are no longer present on the website
-    for (const catToRemove of catsToRemove) {
-      await Cat.deleteOne({ _id: catToRemove._id });
-      console.log(`Cat '${catToRemove.name}' removed from the database.`);
+    if (catObjects.length > 0) {
+      for (const catToRemove of catsToRemove) {
+        await Cat.deleteOne({ _id: catToRemove._id });
+        console.log(`Cat '${catToRemove.name}' removed from the database.`);
+      }
+    } else {
+      console.log('No cats to add to the database. Skipping deletion process.');
     }
 
     for (const cat of catObjects) {
@@ -322,8 +323,8 @@ async function saveCatsToDatabase(catObjects) {
       if (!existingCat) {
         await cat.save();
         console.log(`New cat '${cat.name}' saved to the database.`);
-      } else {       
-         console.log(`Cat '${cat.name}' is already in the database.`);
+      } else {
+        console.log(`Cat '${cat.name}' is already in the database.`);
       }
     }
   } catch (error) {
