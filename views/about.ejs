@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Language" content="he" />
+    <meta name="viewport" content="width=device-width, inital-scale=1.0" />
+    <title>FurEver Mate</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="image_src" href="/onlyCatLogo.png" />
+
+    <link rel="stylesheet" href="/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;1,400;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li class="<%= currentPage === 'home' ? 'active' : '' %>">
+            <a href="/">דף הבית</a>
+          </li>
+          <li class="<%= currentPage === 'about' ? 'active' : '' %>">
+            <a href="/about">אודות</a>
+          </li>
+        </ul>
+      </nav>
+      <a href="/" class="logo"><img src="/logo2.png" alt="" /></a>
+    </header>
+    <main>
+      <div class="content-container">
+        <div class="about-content">
+          <section id="about">
+            <h2 class="section-title">אודות האתר</h2>
+            <p>
+              ברוכים הבאים לאתר FurEver Mate - המקום המושלם למציאת חברים קטנים
+              ומתוקים המחפשים בית. אנו מציעים אוסף ייחודי של חתולים לאימוץ מכל
+              רחבי הארץ.
+            </p>
+            <h2 class="section-title">למה הוקם FurEver Mate?</h2>
+            <p>
+              יש המון חתולים מדהימים שמחכים למשפחה חדשה, אך לא תמיד הם מקבלים את
+              החשיפה שלהם בצורה המתאימה. אנו מבינים כי ישנם המון אתרים ועמותות
+              שאינם זוכים לחשיפה שהם ראויים לה, ואנו רוצים לשנות זאת.
+            </p>
+            <p>
+              באמצעות Furever Mate, אנו נוביל אתכם למקום אחד שבו ירוכזו חתולים
+              מכל רחבי הרשת לחשיפה שווה. במקום לטייל בין אתרים ולחפש בכל פעם
+              מחדש, כאן תוכלו למצוא את כל המידע בקלות ולהתרכז במציאת חבר חדש לכל
+              החיים.
+            </p>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2023 עמית פורמן. כל הזכויות שמורות.</p>
+    </footer>
+  </body>
+</html>

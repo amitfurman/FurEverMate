@@ -64,134 +64,141 @@
           <li class="<%= currentPage === 'home' ? 'active' : '' %>">
             <a href="/">דף הבית</a>
           </li>
-          <li><a href="/about">אודות</a></li>
+          <li class="<%= currentPage === 'about' ? 'active' : '' %>">
+            <a href="/about">אודות</a>
+          </li>
         </ul>
       </nav>
       <a href="/" class="logo"><img src="/logo2.png" alt="" /></a>
     </header>
-    <div class="content-container">
-      <div class="main-content">
-        <section id="product1" class="cats">
-          <h2 class="section-title">חברים קטנים שמחפשים בית</h2>
-          <div id="totalCatsContainer">
-            <p><%= cardDetails.length %> חתולים לאימוץ</p>
-          </div>
-          <div class="cats-container">
-            <% cardDetails.forEach((card, index) => { %>
-            <div class="cat">
-              <a
-                href="<%= card.href %>"
-                target="_blank"
-                class="card-link"
-                title="לחצו לפרטים נוספים"
-              >
-                <img src="<%= card.imgSrc %>" alt="" />
-              </a>
-              <div class="info">
-                <h5><%= card.location %></h5>
-                <div>
-                  <i
-                    id="heart-cat<%= index + 1 %>"
-                    class="far fa-heart"
-                    onclick="toggleHeart('cat<%= index + 1 %>')"
-                  ></i>
-                </div>
-                <div class="description">
-                  <h3 class="cat-name">
-                    <%= card.name %> <% if (card.isMale) { %>
-                    <span class="male-sign"><i class="fas fa-mars"></i></span>
-                    <% } else { %>
-                    <span class="female-sign"
-                      ><i class="fas fa-venus"></i
-                    ></span>
-                    <% } %>
-                  </h3>
-                  <p><%= card.description %></p>
+    <main>
+      <div class="content-container">
+        <div class="main-content">
+          <section id="product1" class="cats">
+            <h2 class="section-title">חברים קטנים שמחפשים בית</h2>
+            <div id="totalCatsContainer">
+              <p><%= cardDetails.length %> חתולים לאימוץ</p>
+            </div>
+            <div class="cats-container">
+              <% cardDetails.forEach((card, index) => { %>
+              <div class="cat">
+                <a
+                  href="<%= card.href %>"
+                  target="_blank"
+                  class="card-link"
+                  title="לחצו לפרטים נוספים"
+                >
+                  <img src="<%= card.imgSrc %>" alt="" />
+                </a>
+                <div class="info">
+                  <h5><%= card.location %></h5>
+                  <div>
+                    <i
+                      id="heart-cat<%= index + 1 %>"
+                      class="far fa-heart"
+                      onclick="toggleHeart('cat<%= index + 1 %>')"
+                    ></i>
+                  </div>
+                  <div class="description">
+                    <h3 class="cat-name">
+                      <%= card.name %> <% if (card.isMale) { %>
+                      <span class="male-sign"><i class="fas fa-mars"></i></span>
+                      <% } else { %>
+                      <span class="female-sign"
+                        ><i class="fas fa-venus"></i
+                      ></span>
+                      <% } %>
+                    </h3>
+                    <p><%= card.description %></p>
+                  </div>
                 </div>
               </div>
+              <% }); %>
             </div>
-            <% }); %>
-          </div>
-        </section>
-      </div>
-      <aside class="sidebar">
-        <div class="filter-section">
-          <h3 class="filter-category" onclick="toggleFilter('region')">
-            אזור
-            <span id="region-arrow">&#9662;</span>
-          </h3>
-          <div class="filter-options" id="region-options">
-            <div class="checkbox-container">
-              <label for="filter-north">צפון</label>
-              <input
-                type="checkbox"
-                id="filter-north"
-                value="north"
-                class="filter-checkbox"
-                onclick="fetchAndFilterCards()"
-              />
-            </div>
-            <div class="checkbox-container">
-              <label for="filter-center">מרכז</label>
-              <input
-                type="checkbox"
-                id="filter-center"
-                value="center"
-                class="filter-checkbox"
-                onclick="fetchAndFilterCards()"
-              />
-            </div>
-            <div class="checkbox-container">
-              <label for="filter-hasharon">השרון</label>
-              <input
-                type="checkbox"
-                id="filter-hasharon"
-                value="hasharon"
-                class="filter-checkbox"
-                onclick="fetchAndFilterCards()"
-              />
-            </div>
-            <div class="checkbox-container">
-              <label for="filter-south">דרום</label>
-              <input
-                type="checkbox"
-                id="filter-south"
-                value="south"
-                class="filter-checkbox"
-                onclick="fetchAndFilterCards()"
-              />
-            </div>
-          </div>
-
-          <h3 class="filter-category" onclick="toggleFilter('gender')">
-            מין
-            <span id="gender-arrow">&#9662;</span>
-          </h3>
-          <div class="filter-options" id="gender-options">
-            <div class="checkbox-container">
-              <label for="filter-female">נקבה</label>
-              <input
-                type="checkbox"
-                id="filter-female"
-                value="female"
-                class="filter-checkbox filter-gender-checkbox"
-                onclick="fetchAndFilterCards()"
-              />
-            </div>
-            <div class="checkbox-container">
-              <label for="filter-male">זכר</label>
-              <input
-                type="checkbox"
-                id="filter-male"
-                value="male"
-                class="filter-checkbox filter-gender-checkbox"
-                onclick="fetchAndFilterCards()"
-              />
-            </div>
-          </div>
+          </section>
         </div>
-      </aside>
-    </div>
+        <aside class="sidebar">
+          <div class="filter-section">
+            <h3 class="filter-category" onclick="toggleFilter('region')">
+              אזור
+              <span id="region-arrow">&#9662;</span>
+            </h3>
+            <div class="filter-options" id="region-options">
+              <div class="checkbox-container">
+                <label for="filter-north">צפון</label>
+                <input
+                  type="checkbox"
+                  id="filter-north"
+                  value="north"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-center">מרכז</label>
+                <input
+                  type="checkbox"
+                  id="filter-center"
+                  value="center"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-hasharon">השרון</label>
+                <input
+                  type="checkbox"
+                  id="filter-hasharon"
+                  value="hasharon"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-south">דרום</label>
+                <input
+                  type="checkbox"
+                  id="filter-south"
+                  value="south"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+            </div>
+
+            <h3 class="filter-category" onclick="toggleFilter('gender')">
+              מין
+              <span id="gender-arrow">&#9662;</span>
+            </h3>
+            <div class="filter-options" id="gender-options">
+              <div class="checkbox-container">
+                <label for="filter-female">נקבה</label>
+                <input
+                  type="checkbox"
+                  id="filter-female"
+                  value="female"
+                  class="filter-checkbox filter-gender-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-male">זכר</label>
+                <input
+                  type="checkbox"
+                  id="filter-male"
+                  value="male"
+                  class="filter-checkbox filter-gender-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2023 עמית פורמן. כל הזכויות שמורות.</p>
+    </footer>
     <script src="/utils.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {

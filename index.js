@@ -69,7 +69,7 @@ app.get('/combinedData', async (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-  res.render('about');
+  res.render('about.ejs');
 });
 
 function handleError(message, error) {

@@ -114,7 +114,7 @@ a {
     }
 
     nav ul li.active a {
-        color: #ff8d78; /* Change the color to pink */
+        color: #ff8d78;
         font-size: 20px;
       }
   
@@ -245,4 +245,32 @@ a {
 .left-aligned {
     display: inline-block;
     text-align: left;
+}
+
+#about p {
+    margin-bottom: 15px;
+    font-size: 20px;
+  }
+
+#about h2 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #000000;
+} 
+
+.about-content{
+    margin: 0 20px 20px 20px;
+}
+
+footer {
+    background-color: #ffeae2;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #9bcbcb;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
