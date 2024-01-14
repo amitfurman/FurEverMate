@@ -253,9 +253,10 @@ a {
   }
 
 #about h2 {
+    /* -webkit-text-stroke: 0.5px #ff8d78; */
     margin-bottom: 10px;
     font-weight: bold;
-    color: #000000;
+    color: #9bcbcb;
 } 
 
 .about-content{
@@ -264,13 +265,17 @@ a {
 
 footer {
     background-color: #ffeae2;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15px;
     font-size: 15px;
     font-weight: 500;
     color: #9bcbcb;
+    /* color: #f8f8f8; */
+    width: 100%;
+}
+
+.about-footer {
     position: absolute;
     bottom: 0;
-    width: 100%;
 }

@@ -196,7 +196,7 @@
         </aside>
       </div>
     </main>
-    <footer>
+    <footer class="index-footer">
       <p>&copy; 2023 עמית פורמן. כל הזכויות שמורות.</p>
     </footer>
     <script src="/utils.js"></script>
@@ -234,6 +234,21 @@
           console.error(`Elements not found for filter: ${filterName}`);
         }
       }
+    </script>
+    <script>
+      window.addEventListener("scroll", function () {
+        var footer = document.querySelector(".index-footer");
+        var main = document.querySelector("main");
+        var scrollPosition = window.scrollY + window.innerHeight;
+        var mainHeight = main.offsetHeight;
+
+        if (scrollPosition >= mainHeight) {
+          footer.style.position = "fixed";
+          footer.style.bottom = "0";
+        } else {
+          footer.style.position = "static";
+        }
+      });
     </script>
   </body>
 </html>
