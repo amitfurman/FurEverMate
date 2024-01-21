@@ -55,7 +55,7 @@ a {
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
     margin: 0px 15px 20px 0;
     transition: 0.2s ease; 
-    background-color: white; 
+    background-color: #f8f8f8; 
     border-color: #efefef;
 }
 
@@ -65,10 +65,40 @@ a {
     border-width: 2px;
 }
 
+.card-link {
+    position: relative;
+    display: inline-block; /* Ensure inline-block to allow positioning of pseudo-elements */
+}
+
+.card-link::after {
+    content: "לחצו כאן לפרטים נוספים";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000000; 
+    background-color: rgba(255, 234, 226, 0.7);  
+    font-size: 16px; 
+    font-weight: bold;
+    opacity: 0;
+    border-radius: 2px; 
+    transition: opacity 0.3s ease; 
+}
+
+.card-link:hover img {
+    filter: blur(3px); /* Apply blur on hover */
+}
+
+.card-link:hover::after {
+    opacity: 1; /* Set opacity to 1 on hover */
+}
+
+
 .cat img {
     width: 200px;
     height: 250px;
     border-radius: 15px;
+    transition: filter 0.3s ease;
 }
 
 .cat .info {
@@ -122,6 +152,8 @@ a {
 .logo img {
     width: 130px;
 }
+
+
 
 .male-sign, .female-sign {
     margin-right: 5px;
