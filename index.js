@@ -84,27 +84,34 @@ async function fetchDataFromSospets() {
     const page = await browser.newPage();
     await page.goto('https://www.sospets.co.il/cats-adoption', { timeout: 20000 });
 
-    let isDisabled = await page.evaluate(() => document.querySelector('.kuTaGy').disabled);
-    while (await page.$('.kuTaGy') && !isDisabled) {
-      await page.click('.kuTaGy');
+    let isDisabled = await page.evaluate(() => document.querySelector('.PlZyDq').disabled);
+    while (await page.$('.PlZyDq') && !isDisabled) {
+      await page.click('.PlZyDq');
       await page.waitForTimeout(500);
-      isDisabled = await page.evaluate(() => document.querySelector('.kuTaGy').disabled);
-    }
+      isDisabled = await page.evaluate(() => document.querySelector('.PlZyDq').disabled);    }
 
+    console.log('Button disabled or not found. Fetching data...' + isDisabled + 'isDisabled');
     const cardDetails = await page.evaluate(() => {
         const cards = Array.from(document.querySelectorAll('.Zc7IjY'));
 
         return cards.map(card => {
           const imgElement = card.querySelector('img');
+          console.log(imgElement + 'imgElement');
           const imgSrc = imgElement ? imgElement.src : '';
+          console.log(imgSrc + 'imgSrc');
+          const textLines = card.innerText.split('\n\n').slice(0, 2);
+          console.log(textLines + 'textLines');
+          const name = textLines[0] || '';
+          console.log(name + 'name');
+          const description = textLines[1] || '';
+          console.log(description + 'description');
+          const isMale = description.includes('בן');
+          console.log(isMale + 'isMale');
 
-            const textLines = card.innerText.split('\n\n').slice(0, 2);
-            const name = textLines[0] || '';
-            const description = textLines[1] || '';
-            const isMale = description.includes('בן');
-
-            const anchorTag = card.querySelector('a');
-            const href = anchorTag ? anchorTag.getAttribute('href') : '';
+          const anchorTag = card.querySelector('a');
+          console.log(anchorTag + 'anchorTag');
+          const href = anchorTag ? anchorTag.getAttribute('href') : '';
+          console.log(href + 'href');
 
             return{
               name,
