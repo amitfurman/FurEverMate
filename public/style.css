@@ -43,6 +43,7 @@ a {
     flex-wrap: wrap; 
     padding-top: 20px;
     margin-left: 12px;
+    justify-content: center;
 
 }
 
