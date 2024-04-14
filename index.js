@@ -36,10 +36,9 @@ async function fetchDataAndCache() {
     const letliveData = await fetchDataFromLetLive();
     const rlaData = await fetchDataFromRla();
     const petProtectHaifaData = await fetchDataFromPetProtectHaifa();
-    combinedData = sospetsData.concat(letliveData, rlaData, petProtectHaifaData);
+    combinedData = letliveData.concat(sospetsData, rlaData, petProtectHaifaData);
     const catInstances = combinedData.map(catData => new Cat(catData));
     await saveCatsToDatabase(catInstances);
-    
     console.log('Finished fetching data');
   } catch (error) {
     console.error('Error fetching and caching data:', error.message);

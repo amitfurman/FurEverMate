@@ -151,12 +151,12 @@ function createCardElement(card, index) {
     const locationHeading = document.createElement('h5');
     locationHeading.textContent = card.location;
 
-    const heartDiv = document.createElement('div');
-    const heartIcon = document.createElement('i');
-    heartIcon.id = `heart-cat${index + 1}`;
-    heartIcon.classList.add('far', 'fa-heart');
-    heartIcon.onclick = () => toggleHeart(`cat${index + 1}`);
-    heartDiv.appendChild(heartIcon);
+    // const heartDiv = document.createElement('div');
+    // const heartIcon = document.createElement('i');
+    // heartIcon.id = `heart-cat${index + 1}`;
+    // heartIcon.classList.add('far', 'fa-heart');
+    // heartIcon.onclick = () => toggleHeart(`cat${index + 1}`);
+    // heartDiv.appendChild(heartIcon);
 
     const descriptionDiv = document.createElement('div');
     descriptionDiv.classList.add('description');
@@ -181,7 +181,7 @@ function createCardElement(card, index) {
     descriptionDiv.appendChild(descriptionParagraph);
 
     infoDiv.appendChild(locationHeading);
-    infoDiv.appendChild(heartDiv);
+   // infoDiv.appendChild(heartDiv);
     infoDiv.appendChild(descriptionDiv);
 
     cardDiv.appendChild(cardLink);
