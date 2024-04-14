@@ -4,6 +4,6 @@ An interactive web application designed to streamline the cat adoption process b
 
  <img width="945" alt="image" src="https://github.com/amitfurman/FurEverMate/assets/111306242/2d3a8ecb-2d75-4749-a90f-4e346f77d249">
 
-Contact
+**Contact**
 For any inquiries or feedback, please contact me at amitff103@gmail.com.
 
