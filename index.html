@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -33,4 +33,286 @@
     <script src="index.js"></script>
   </body>
   >
+</html> -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Language" content="he" />
+
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge" /> -->
+    <meta name="viewport" content="width=device-width, inital-scale=1.0" />
+    <title>FurEver Mate</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="image_src" href="/onlyCatLogo.png" />
+
+    <link rel="stylesheet" href="/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;1,400;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Fredoka One -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap"
+    />
+
+    <!-- Secular One -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Secular+One&display=swap"
+    />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li class="<%= currentPage === 'home' ? 'active' : '' %>">
+            <a href="/">דף הבית</a>
+          </li>
+          <li class="<%= currentPage === 'about' ? 'active' : '' %>">
+            <a href="/about">אודות</a>
+          </li>
+        </ul>
+      </nav>
+      <a href="/" class="logo"><img src="/logo2.png" alt="" /></a>
+    </header>
+    <main>
+      <div class="content-container">
+        <div class="main-content">
+          <section id="product1" class="cats">
+            <h2 class="section-title">חברים קטנים שמחפשים בית</h2>
+            <div id="totalCatsContainer">
+              <p><%= cardDetails.length %> חתולים לאימוץ</p>
+            </div>
+            <div class="cats-container">
+              <% cardDetails.forEach((card, index) => { %>
+              <div class="cat">
+                <a
+                  href="<%= card.href %>"
+                  target="_blank"
+                  class="card-link"
+                  title="לחצו לפרטים נוספים"
+                >
+                  <img src="<%= card.imgSrc %>" alt="" />
+                </a>
+                <div class="info">
+                  <h5><%= card.location %></h5>
+                  <!-- <div>
+                    <i
+                      id="heart-cat<%= index + 1 %>"
+                      class="far fa-heart"
+                      onclick="toggleHeart('cat<%= index + 1 %>')"
+                    ></i>
+                  </div> -->
+                  <div class="description">
+                    <h3 class="cat-name">
+                      <%= card.name %> <% if (card.isMale) { %>
+                      <span class="male-sign"><i class="fas fa-mars"></i></span>
+                      <% } else { %>
+                      <span class="female-sign"
+                        ><i class="fas fa-venus"></i
+                      ></span>
+                      <% } %>
+                    </h3>
+                    <p><%= card.description %></p>
+                  </div>
+                </div>
+              </div>
+              <% }); %>
+            </div>
+          </section>
+        </div>
+        <aside class="sidebar">
+          <div class="filter-section">
+            <h3 class="filter-category" onclick="toggleFilter('region')">
+              אזור
+              <span id="region-arrow">&#9662;</span>
+            </h3>
+            <div class="filter-options" id="region-options">
+              <div class="checkbox-container">
+                <label for="filter-north">צפון</label>
+                <input
+                  type="checkbox"
+                  id="filter-north"
+                  value="north"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-center">מרכז</label>
+                <input
+                  type="checkbox"
+                  id="filter-center"
+                  value="center"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-hasharon">השרון</label>
+                <input
+                  type="checkbox"
+                  id="filter-hasharon"
+                  value="hasharon"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-south">דרום</label>
+                <input
+                  type="checkbox"
+                  id="filter-south"
+                  value="south"
+                  class="filter-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+            </div>
+
+            <h3 class="filter-category" onclick="toggleFilter('gender')">
+              מין
+              <span id="gender-arrow">&#9662;</span>
+            </h3>
+            <div class="filter-options" id="gender-options">
+              <div class="checkbox-container">
+                <label for="filter-female">נקבה</label>
+                <input
+                  type="checkbox"
+                  id="filter-female"
+                  value="female"
+                  class="filter-checkbox filter-gender-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+              <div class="checkbox-container">
+                <label for="filter-male">זכר</label>
+                <input
+                  type="checkbox"
+                  id="filter-male"
+                  value="male"
+                  class="filter-checkbox filter-gender-checkbox"
+                  onclick="fetchAndFilterCards()"
+                />
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer class="index-footer">
+      <p>&copy; 2024 עמית פורמן. כל הזכויות שמורות.</p>
+    </footer>
+    <script src="/utils.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        loadFiltersFromLocalStorage();
+        loadFavoriteCatsFromLocalStorage();
+        fetchAndFilterCards()
+          .then(() => {
+            updateHeartIcons();
+          })
+          .catch((error) => {
+            console.error("Error fetching and filtering cards:", error);
+          });
+      });
+    </script>
+    <script>
+      function toggleFilter(filterName) {
+        console.log("Toggling filter:", filterName);
+        const optionsDiv = document.getElementById(`${filterName}-options`);
+        const arrowSpan = document.getElementById(`${filterName}-arrow`);
+
+        if (optionsDiv && arrowSpan) {
+          if (
+            optionsDiv.style.display === "none" ||
+            optionsDiv.style.display === ""
+          ) {
+            optionsDiv.style.display = "block";
+            arrowSpan.innerHTML = "&#9652;"; // Upward arrow
+          } else {
+            optionsDiv.style.display = "none";
+            arrowSpan.innerHTML = "&#9662;"; // Downward arrow
+          }
+        } else {
+          console.error(`Elements not found for filter: ${filterName}`);
+        }
+      }
+    </script>
+    <script>
+      window.addEventListener("scroll", function () {
+        var footer = document.querySelector(".index-footer");
+        var main = document.querySelector("main");
+        var scrollPosition = window.scrollY + window.innerHeight;
+        var mainHeight = main.offsetHeight;
+
+        if (scrollPosition >= mainHeight) {
+          footer.style.position = "fixed";
+          footer.style.bottom = "0";
+        } else {
+          footer.style.position = "static";
+        }
+      });
+    </script>
+  </body>
 </html>
+
+<!-- <h3 class="filter-category" onclick="toggleFilter('association')">
+  עמותה
+  <span id="association-arrow">&#9662;</span>
+</h3>
+<div class="filter-options" id="association-options">
+  <div class="checkbox-container">
+    <label for="filter-female">נקבה</label>
+    <input
+      type="checkbox"
+      id="filter-female"
+      value="female"
+      class="filter-checkbox filter-gender-checkbox"
+      onclick="fetchAndFilterCards()"
+    />
+  </div>
+  <div class="checkbox-container">
+    <label for="filter-male">זכר</label>
+    <input
+      type="checkbox"
+      id="filter-male"
+      value="male"
+      class="filter-checkbox filter-gender-checkbox"
+      onclick="fetchAndFilterCards()"
+    />
+  </div>
+</div> -->
+
